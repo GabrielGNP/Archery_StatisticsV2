@@ -1,0 +1,378 @@
+import React, { useState, useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Dimensions } from "react-native";
+import { whiteMode, darkMode } from '../../styles/components/modals/datePad/themeStyles';
+import { themeStyleView } from '../../global/variables';
+import { Colors } from '../../styles/colors';
+import Modal from 'react-native-modal'
+import { LinearGradient } from "expo-linear-gradient";
+
+  var gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
+  var gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
+  var styleView = whiteMode
+  if(themeStyleView=="whiteMode"){
+      styleView = whiteMode
+      gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
+      gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
+  }else{
+      styleView = darkMode
+      gradientColorsTop = [Colors.colorBlue4,"transparent"]
+      gradientColorsBottom = ["transparent", Colors.colorBlue4]
+  }
+
+// Constantes ajustadas para mostrar exactamente 5 elementos
+const ITEM_WIDTH = 40; // Ancho de cada elemento
+const ITEMS_TO_SHOW = 5; // Número de elementos visibles
+const VIEWPORT_WIDTH = ITEM_WIDTH * ITEMS_TO_SHOW; // Ancho total basado en 5 elementos
+const CONTAINER_PADDING = 20; // Padding del contenedor modal
+
+const CustomDatePicker = ({ date = new Date(), onConfirm, onCancel, visible, visibleFunction}) => {
+  const [selectedDay, setSelectedDay] = useState(date.getDate());
+  const [selectedMonth, setSelectedMonth] = useState(date.getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(date.getFullYear());
+
+  // Generar datos con elementos fantasma al principio y al final
+  // Añadimos 2 elementos vacíos al principio y 2 al final para permitir seleccionar todos los elementos
+  const generateDaysArray = () => {
+    // Crear array base de días (1-31)
+    const daysArray = Array.from({ length: 31 }, (_, i) => i + 1);
+    
+    // Añadir elementos fantasma al principio y final
+    return ["", "", ...daysArray, "", ""];
+  };
+  
+  const generateYearsArray = () => {
+    const yearsArray = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - 50 + i);
+    return ["", "", ...yearsArray, "", ""];
+  };
+
+  // Arrays con elementos fantasma
+  const days = generateDaysArray();
+  const months = ["", "", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre", "", ""];
+  const years = generateYearsArray();
+  const monthNumbers = ["", "", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, "", ""];
+
+  // Referencias para los FlatLists
+  const dayRef = useRef(null);
+  const monthRef = useRef(null);
+  const yearRef = useRef(null);
+
+  // Función actualizada para manejar el desplazamiento y selección
+  const handleScrollEnd = (event, setFunction, data) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    
+    // Calculamos el índice del elemento central
+    const index = Math.round(offsetY / ITEM_WIDTH) + 2; // +2 porque añadimos 2 elementos fantasma al principio
+    
+    // Verificar límites
+    if (index >= 2 && index < data.length - 2) { // Ignoramos los elementos fantasma
+      setFunction(data[index]);
+    }
+  };
+
+  // Función para desplazar los FlatLists a la posición inicial correcta
+  const scrollToInitialPositions = () => {
+    if (!visible) return;
+    
+    // Calcular las posiciones iniciales (ajustadas por los elementos fantasma)
+    const dayIndex = days.findIndex(d => d === selectedDay);
+    const monthIndex = monthNumbers.findIndex(m => m === selectedMonth);
+    const yearIndex = years.findIndex(y => y === selectedYear);
+    
+    // Añadir un pequeño retraso para asegurar que los FlatLists estén renderizados
+    setTimeout(() => {
+      if (dayRef.current && dayIndex !== -1) {
+        // Calculamos el offset teniendo en cuenta que queremos que el elemento seleccionado
+        // esté en la posición central (posición 2 de 5)
+        const offset = Math.max(0, (dayIndex - 2) * ITEM_WIDTH);
+        dayRef.current.scrollToOffset({ offset, animated: false });
+      }
+      
+      if (monthRef.current && monthIndex !== -1) {
+        const offset = Math.max(0, (monthIndex - 2) * ITEM_WIDTH);
+        monthRef.current.scrollToOffset({ offset, animated: false });
+      }
+      
+      if (yearRef.current && yearIndex !== -1) {
+        const offset = Math.max(0, (yearIndex - 2) * ITEM_WIDTH);
+        yearRef.current.scrollToOffset({ offset, animated: false });
+      }
+    }, 10);
+  };
+
+  // Efecto para inicializar los scrolls cuando se abre el modal
+  useEffect(() => {
+    scrollToInitialPositions();
+  }, [visible]);
+
+  // Función para renderizar elementos
+  const renderItem = (item, isSelected, isMonth) => (
+    <View style={[
+      styles.item,
+      isSelected && styles.selected,
+      isMonth && styles.item_month,
+      item ==="" && styles.item_empty
+    ]}>
+      <Text style={[isSelected ? styles.selectedText : styles.itemText ]}>
+        {item}
+      </Text>
+    </View>
+  );
+
+  // Función para formatear la fecha como texto
+  const formatSelectedDate = () => {
+    const monthName = months.find((_, index) => monthNumbers[index] === selectedMonth) || "";
+    return `${selectedDay} de ${monthName} ${selectedYear}`;
+  };
+
+  return (
+    <Modal 
+        isVisible={visible}
+        onBackdropPress={visibleFunction}
+        backdropOpacity={0.4}
+        animationInTiming={400}
+        animationOutTiming={400}
+        style={{margin:0}}
+    >
+      <View style={[styles.container_modal,styleView.styles.container_modal]}>
+        <View style={{flexDirection:"row", width:"100%"}}>
+          <Text style={{flex:1, textAlign:"center",fontSize:20,color:Colors.colorBlue1}}>Día</Text>
+          <Text style={{flex:1.4, textAlign:"center",fontSize:20,color:Colors.colorBlue1}}>Mes</Text>
+          <Text style={{flex:1, textAlign:"center",fontSize:20,color:Colors.colorBlue1}}>Año</Text>
+        </View>
+        <View style={styles.pickerContainer}> 
+           <LinearGradient
+              colors={gradientColorsTop}
+              pointerEvents="none"
+              style={[styles.shadow]}
+              start={{x:0.5,y:0.05}}
+              end={{x:0.5, y:1}}
+          ></LinearGradient>
+          <LinearGradient
+              colors={gradientColorsBottom}
+              pointerEvents="none"
+              style={[styles.shadow,styles.shadow_bottom]}
+              start={{x:0.5,y:0.05}}
+              end={{x:0.5, y:1}}
+          ></LinearGradient>
+
+          {/* Día */}
+          <FlatList
+            ref={dayRef}
+            data={days}
+            keyExtractor={(item, index) => `day-${index}`}
+            vertical
+            showsVerticalScrollIndicator={false}
+            snapToInterval={ITEM_WIDTH}
+            decelerationRate="fast"
+            onMomentumScrollEnd={(event) => handleScrollEnd(event, setSelectedDay, days)}
+            getItemLayout={(data, index) => ({
+              length: ITEM_WIDTH,
+              offset: ITEM_WIDTH * index,
+              index,
+            })}
+            renderItem={({ item }) => renderItem(item, selectedDay === item, false)}
+            style={[styles.list]}
+          />
+
+          {/* Mes */}
+          <FlatList
+            ref={monthRef}
+            data={months}
+            keyExtractor={(item, index) => `month-${index}`}
+            vertical
+            showsVerticalScrollIndicator={false}
+            snapToInterval={ITEM_WIDTH}
+            decelerationRate="fast"
+            onMomentumScrollEnd={(event) => {
+              const offsetY = event.nativeEvent.contentOffset.y;
+              const index = Math.round(offsetY / ITEM_WIDTH) + 2;
+              if (index >= 2 && index < monthNumbers.length - 2) {
+                setSelectedMonth(monthNumbers[index]);
+              }
+            }}
+            getItemLayout={(data, index) => ({
+              length: ITEM_WIDTH,
+              offset: ITEM_WIDTH * index,
+              index,
+            })}
+            renderItem={({ item, index }) => renderItem(item, selectedMonth === monthNumbers[index], true)}
+            style={[styles.list]}
+          />
+
+          {/* Año */}
+          <FlatList
+            ref={yearRef}
+            data={years}
+            keyExtractor={(item, index) => `year-${index}`}
+            vertical
+            showsVerticalScrollIndicator={false}
+            snapToInterval={ITEM_WIDTH}
+            decelerationRate="fast"
+            onMomentumScrollEnd={(event) => handleScrollEnd(event, setSelectedYear, years, false)}
+            getItemLayout={(data, index) => ({
+              length: ITEM_WIDTH,
+              offset: ITEM_WIDTH * index,
+              index,
+            })}
+            renderItem={({ item }) => renderItem(item, selectedYear === item)}
+            style={[styles.list]}
+          />
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity 
+            onPress={() => {
+              visibleFunction();
+              if (onCancel) onCancel();
+            }} 
+            style={styles.cancelButton}
+          >
+            <Text>Cancelar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            onPress={() => {
+              // Validar fecha (verificar días en el mes)
+              const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+              const validDay = Math.min(selectedDay, daysInMonth);
+              
+              onConfirm(new Date(selectedYear, selectedMonth - 1, validDay));
+              visibleFunction();
+            }} 
+            style={styles.confirmButton}
+          >
+            <Text style={{ color: "white" }}>Confirmar</Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+    </Modal>
+
+  );
+};
+
+const styles = StyleSheet.create({
+
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  container_modal:{
+    position:"absolute",
+    bottom:"0",
+    height:"45%",
+    width:"100%",
+    borderStartStartRadius:50,
+    borderEndStartRadius:50,
+    borderRadius:50,
+    flexDirection:"column",
+    padding: 20,
+    borderWidth:2,
+},
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  pickerContainer: {
+    flexDirection:"row",
+    position: "relative",
+    height: VIEWPORT_WIDTH,
+    width: "100%",
+    alignItems: "center",
+    
+  },
+  list: {
+    height: VIEWPORT_WIDTH,
+    // height: 150,
+    marginVertical: 5,
+    
+    padding:0
+  },
+  item: {
+    width: 80,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf:"center",
+    height: ITEM_WIDTH,
+    borderRadius:20,
+    borderWidth:2,
+    borderColor:Colors.colorBlue2,
+    backgroundColor: Colors.colorBlue3,
+  },
+  item_month: {
+    width: 120,
+  },
+  item_empty:{
+    borderWidth:0,
+    backgroundColor: Colors.colorBlue4,
+  },
+  selected: {
+    borderColor:Colors.colorBlue1,
+    backgroundColor: Colors.colorBlue2,
+    borderRadius: 20,
+  },
+  itemText: {
+    color:Colors.colorBlue1,
+    fontSize:17
+  },
+  selectedText: {
+    color:Colors.colorBlue1,
+    fontWeight: "bold",
+    fontSize:20
+  },
+  centerIndicator: {
+    position: "absolute",
+    top: "50%",
+    width: ITEM_WIDTH + 4,
+    height: 50,
+    marginTop: -25,
+    borderWidth: 2,
+    borderColor: "#007AFF",
+    borderRadius: 5,
+    backgroundColor: "transparent",
+    zIndex: -1,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 15,
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  cancelButton: {
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    minWidth: 100,
+    alignItems: "center",
+  },
+  confirmButton: {
+    backgroundColor: "#007AFF",
+    padding: 10,
+    borderRadius: 5,
+    minWidth: 100,
+    alignItems: "center",
+  },
+
+  shadow:{
+    width:"100%",
+    height:40,
+    top:0,
+    position:"absolute",
+    zIndex:1,
+  },
+  shadow_bottom:{
+    bottom:0,
+    top:null
+  },
+});
+
+export default CustomDatePicker;
