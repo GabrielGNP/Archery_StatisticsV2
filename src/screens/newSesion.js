@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView} from 'react-native';
 
 
 import { whiteMode, darkMode} from '../styles/screens/newSesion/themeStyles.js';
@@ -8,12 +8,10 @@ import { Colors } from '../styles/colors.js';
 
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import BlueButton from '../components/blueButton.js';
+import BlueButton from '../components/buttons/blueButton.js';
 import { useNavigation } from '@react-navigation/native';
 
-import Modal from "react-native-modal";
-import DatePad from '../components/modals/datePad.js';
-import CustomDatePicker from '../components/modals/CustomDatePicker.js';
+import DatePicker from '../components/modals/datePicker.js';
 export default function NewSesion() {
 
     const navigation = useNavigation();
@@ -26,53 +24,110 @@ export default function NewSesion() {
     }else{
         styleView = darkMode
     }
-
+ 
     return(
         <View  style={[styles.Main_container,styleView.styles.Main_container]}>
-            <View style={styles.first_container}>
-                <View style={styles.option}>
+            <ScrollView style={styles.first_container}>
+                {/*Input de fecha*/}
+                <View style={[styles.option,{marginTop:40}]}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Fecha</Text>
-                    <LinearGradient 
-                        style={[styles.button_change_date]}
-                        colors={viewGradientColors}
-                    >
-                        <TouchableOpacity 
-                            style={styles.central_button}
+                    <TouchableOpacity 
+                            style={[styles.central_button]}
                             onPress={() => {setModalVisible(true)}}
                         >
-                            <Feather name="calendar" size={25} color={Colors.colorBack1} style={{textAlign:"center"}}/>
-                        </TouchableOpacity>
-                    </LinearGradient>
-                    <Text style={[styles.option_text,styleView.styles.option_text]}>00/00/0000</Text>
+                        <LinearGradient 
+                            style={[styles.button_change_date]}
+                            colors={viewGradientColors}
+                        >
+                            <Feather name="calendar" size={25} color={Colors.colorBack1} style={{textAlign:"center"}}/>                        
+                        </LinearGradient>          
+                        <Text style={[styles.option_text,styleView.styles.option_text]}>{date.getDate() + "/" + (date.getMonth()+1)+ "/" + date.getFullYear() }</Text>
+                    </TouchableOpacity>
                 </View>
+                
+                {/*Input de Distancia*/}
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Distancia</Text>
-                    <TextInput></TextInput>
-                    
+                    <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
+                        <TextInput
+                            style={[styles.numeric_input,{marginLeft:50}]}
+                            keyboardType="numeric"
+                            onChangeText={()=>{}}
+                            value={"70"}
+                            selectionColor={Colors.colorBlue2}
+                        />
+                        <Text style={[{width:40, fontSize:20, fontWeight:500, color:Colors.colorBlue1, marginLeft:10}]}>mts</Text>
+                    </View>
                 </View>
+
+                {/*Input de Arco*/}
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Arco</Text>
-                   
+                    <TextInput
+                        style={[styles.numeric_input]}
+                        keyboardType="default"
+                        onChangeText={()=>{}}
+                        value={"recurvo"}
+                        selectionColor={Colors.colorBlue2}
+                    />
                 </View>
+
+                {/*Input de Libraje*/}
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Libraje</Text>
+                    <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
+                        <TextInput
+                            style={[styles.numeric_input,{marginLeft:50}]}
+                            keyboardType="numeric"
+                            onChangeText={()=>{}}
+                            value={"35"}
+                        />
+                        <Text style={[{width:40, fontSize:20, fontWeight:500, color:Colors.colorBlue1, marginLeft:10}]}>lb</Text>
+                    </View>
                 </View>
+
+                {/*Input de Cantidad de Sets*/}
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Cantidad de Sets</Text>
+                    <TextInput
+                        style={[styles.numeric_input]}
+                        keyboardType="numeric"
+                        onChangeText={()=>{}}
+                        value={"10"}
+                        selectionColor={Colors.colorBlue2}
+                    />
                 </View>
+
+                {/*Input de Cantidad de Flechas*/}
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Flechas por Set</Text>
+                    <TextInput
+                        style={[styles.numeric_input]}
+                        keyboardType="numeric"
+                        onChangeText={()=>{}}
+                        value={"3"}
+                        selectionColor={Colors.colorBlue2}
+                    />
                 </View>
-            </View>
-            <BlueButton text="Continuar" style={{marginBottom: 10}}></BlueButton>
+            </ScrollView>
+            <BlueButton 
+                text="Continuar" 
+                style={{marginBottom: 10}}
+                onPress={()=>{
+                    console.log("continuar:")
+                    console.log("_______________________")
+                    console.log(date)
+                }}
+                >
+            </BlueButton>
             {/* <DatePad visible={isModalVisible} visibleFunction={() => setModalVisible(false)}></DatePad> */}
-            <CustomDatePicker
-                                date={date}
-                                onConfirm={(selectedDate) => setDate(selectedDate)}
-                                onCancel={() => console.log("Cancelado")}
-                                visible={isModalVisible} 
-                                visibleFunction={() => setModalVisible(false)}
-                            />
+            <DatePicker
+                date={date}
+                onConfirm={(selectedDate) => setDate(selectedDate)}
+                onCancel={() => console.log("Cancelado")}
+                visible={isModalVisible} 
+                visibleFunction={() => setModalVisible(false)}
+            />
         </View>
     )
 }
@@ -110,20 +165,30 @@ const styles = StyleSheet.create({
 
     first_container:{
         flex:1,
-        marginTop:70,
-        marginLeft:50,
         width:"100%",
     },
     option:{
         width:"100%",
-        height:50,
-        flexDirection: "row",
-
+        height:80,
+        flexDirection: "column",
+        alignContent:"center",
     },
     option_text:{
-        flex:0.3,
         fontSize:20,
-        fontWeight:"500"
+        paddingHorizontal:10,
+        fontWeight:"500",
+        textAlign:"center",
+        alignSelf:"center",
+    },
+    central_button:{
+        backgroundColor:Colors.colorBlue4,
+        borderWidth:1,
+        borderColor:Colors.colorBlue3,
+        borderRadius:20,
+        flexDirection:"row", 
+        padding:0,
+        alignSelf:"center",
+        justifyContent:"center"
     },
     button_change_date:{
         height: 40,
@@ -131,13 +196,25 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor:"transparent",
         borderRadius:100,
-        marginRight:15
-    },
-    central_button:{
-        backgroundColor:"transparent",
     },
     option_input:{
         width:50,
         height:50,        
     },
+
+    numeric_input:{
+        backgroundColor:Colors.colorBlue4,
+        borderColor:Colors.colorBlue3,
+        borderWidth:1,
+        width:150,
+        borderRadius:100,
+        alignSelf:"center",
+        color:Colors.colorBlue1,
+        fontSize:20,
+        fontWeight:500,
+        textAlign:"center",
+        paddingHorizontal:10,
+        paddingTop:5,
+        paddingBottom:5
+    }
 })

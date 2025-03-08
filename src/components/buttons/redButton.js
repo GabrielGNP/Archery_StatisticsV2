@@ -1,13 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors } from '../styles/colors';
+import { Colors } from '../../styles/colors';
 
-export default function BlueButton(prop) {
-    const { text, onPress, style} = prop
+export default function RedButton(prop) {
+    const { text, onPress, style, textSize = 30} = prop
     const extraStyle = style
     return (
         <LinearGradient 
-            colors = {[Colors.colorBlue2,Colors.colorBlue3]}
+            colors = {[Colors.colorRed1,Colors.colorRed2]}
             style={[styles.button,extraStyle]}
             locations={[0.3, 1]}
             start={{x: 0.5, y: 0}}
@@ -17,7 +17,7 @@ export default function BlueButton(prop) {
                 onPress = {onPress}
                 style = {[styles.touchable, {width: parseInt(250), height: parseInt(50)}]}
             >
-                <Text style={styles.text}>
+                <Text style={[styles.text,{fontSize:textSize}]}>
                     {text}
                 </Text>
             </TouchableOpacity>
@@ -26,11 +26,6 @@ export default function BlueButton(prop) {
 }
 
 const styles = StyleSheet.create({
-    text:{
-        fontSize: 30,
-        color: "white",
-        fontWeight: "bold"
-    },
     button:{
         backgroundColor: "transparent",
         width: 250,
@@ -42,6 +37,11 @@ const styles = StyleSheet.create({
         fontSize: 30,
         shadowColor: "black",
         elevation: 10,
+    },
+    text:{
+        fontSize: 30,
+        color: "white",
+        fontWeight: "bold"
     },
     touchable:{
         backgroundColor: "transparent",

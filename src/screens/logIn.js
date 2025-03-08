@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Colors } from '../styles/colors.js'
-import BlueButton from '../components/blueButton.js'
+import BlueButton from '../components/buttons/blueButton.js'
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { whiteMode, darkMode } from '../styles/screens/logIn/themeStyles.js';
