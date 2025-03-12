@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView} from 'react-native';
-
-
-import { whiteMode, darkMode} from '../styles/screens/newSesion/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../global/variables.js';
-import { Colors } from '../styles/colors.js';
-
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, KeyboardAvoidingView, Keyboard} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import BlueButton from '../components/buttons/blueButton.js';
 import { useNavigation } from '@react-navigation/native';
 
-import DatePicker from '../components/modals/datePicker.js';
+import { whiteMode, darkMode} from './styles/themeStyles.js';
+import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { Colors } from '../../global/colors.js';
+
+import BlueButton from '../../components/buttons/blueButton.js';
+import DatePicker from '../../components/modals/datePicker/datePicker.js';
+
 export default function NewSesion() {
 
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
+    const [endButtonVisible, setEndButtonVisible] = useState("flex");
     const [date, setDate] = useState(new Date());
+    const [distance, setDistance] = useState(70);
+    const [bow, setBow] = useState("recurvo");
+    const [pound, setPound] = useState(35);
+    const [sets, setSets] = useState(10);
+    const [arrows, setArrows] = useState(3);
+
+    useEffect(() => {
+        const hideListener = Keyboard.addListener("keyboardDidHide", () => setEndButtonVisible("flex"))
+
+        return () => {
+            hideListener.remove();
+        }
+    },[])
+
     var viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
     var styleView = whiteMode
     if(themeStyleView=="whiteMode"){
@@ -25,14 +39,20 @@ export default function NewSesion() {
         styleView = darkMode
     }
  
+    function showButton(){
+        setEndButtonVisible(true)
+    }
+    function hideButton(){
+        setEndButtonVisible(false)
+    }
     return(
-        <View  style={[styles.Main_container,styleView.styles.Main_container]}>
+        <KeyboardAvoidingView style={[styles.Main_container,styleView.styles.Main_container]} behavior="none">
             <ScrollView style={styles.first_container}>
                 {/*Input de fecha*/}
                 <View style={[styles.option,{marginTop:40}]}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Fecha</Text>
                     <TouchableOpacity 
-                            style={[styles.central_button]}
+                            style={[styles.central_button, styleView.styles.central_button]}
                             onPress={() => {setModalVisible(true)}}
                         >
                         <LinearGradient 
@@ -50,13 +70,19 @@ export default function NewSesion() {
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Distancia</Text>
                     <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
                         <TextInput
-                            style={[styles.numeric_input,{marginLeft:50}]}
+                            style={[styles.numeric_input,styleView.styles.numeric_input,{marginLeft:50}]}
                             keyboardType="numeric"
-                            onChangeText={()=>{}}
-                            value={"70"}
+                            onChangeText={(value)=>{setDistance(value)}}
+                            value={distance.toString()}
                             selectionColor={Colors.colorBlue2}
+
+                            onPress={()=>setEndButtonVisible("none")}
+                            onPressIn={()=>setEndButtonVisible("none")}
+                            onEndEditing={()=>setEndButtonVisible("flex")}
+                            onBlur={()=>setEndButtonVisible("flex")}
+                            onSubmitEditing={()=>setEndButtonVisible("flex")}
                         />
-                        <Text style={[{width:40, fontSize:20, fontWeight:500, color:Colors.colorBlue1, marginLeft:10}]}>mts</Text>
+                        <Text style={[styles.option_text,styleView.styles.option_text]}>mts</Text>
                     </View>
                 </View>
 
@@ -64,11 +90,18 @@ export default function NewSesion() {
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Arco</Text>
                     <TextInput
-                        style={[styles.numeric_input]}
+                        style={[styles.numeric_input,styleView.styles.numeric_input]}
                         keyboardType="default"
-                        onChangeText={()=>{}}
-                        value={"recurvo"}
+                        spellCheck={false}
+                        onChangeText={(value)=>{setBow(value)}}
+                        value={bow}
                         selectionColor={Colors.colorBlue2}
+
+                        onPress={()=>setEndButtonVisible("none")}
+                        onPressIn={()=>setEndButtonVisible("none")}
+                        onEndEditing={()=>setEndButtonVisible("flex")}
+                        onBlur={()=>setEndButtonVisible("flex")}
+                        onSubmitEditing={()=>setEndButtonVisible("flex")}
                     />
                 </View>
 
@@ -77,12 +110,18 @@ export default function NewSesion() {
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Libraje</Text>
                     <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
                         <TextInput
-                            style={[styles.numeric_input,{marginLeft:50}]}
+                            style={[styles.numeric_input,styleView.styles.numeric_input,{marginLeft:50}]}
                             keyboardType="numeric"
-                            onChangeText={()=>{}}
-                            value={"35"}
+                            onChangeText={(value)=>{setPound(value)}}
+                            value={pound.toString()}
+
+                            onPress={()=>setEndButtonVisible("none")}
+                            onPressIn={()=>setEndButtonVisible("none")}
+                            onEndEditing={()=>setEndButtonVisible("flex")}
+                            onBlur={()=>setEndButtonVisible("flex")}
+                            onSubmitEditing={()=>setEndButtonVisible("flex")}
                         />
-                        <Text style={[{width:40, fontSize:20, fontWeight:500, color:Colors.colorBlue1, marginLeft:10}]}>lb</Text>
+                        <Text style={[styles.option_text,styleView.styles.option_text,{marginRight:15}]}>lb</Text>
                     </View>
                 </View>
 
@@ -90,11 +129,17 @@ export default function NewSesion() {
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Cantidad de Sets</Text>
                     <TextInput
-                        style={[styles.numeric_input]}
+                        style={[styles.numeric_input,styleView.styles.numeric_input]}
                         keyboardType="numeric"
-                        onChangeText={()=>{}}
-                        value={"10"}
+                        onChangeText={(value)=>{setSets(value)}}
+                        value={sets.toString()}
                         selectionColor={Colors.colorBlue2}
+
+                        onPress={()=>setEndButtonVisible("none")}
+                        onPressIn={()=>setEndButtonVisible("none")}
+                        onEndEditing={()=>setEndButtonVisible("flex")}
+                        onBlur={()=>setEndButtonVisible("flex")}
+                        onSubmitEditing={()=>setEndButtonVisible("flex")}
                     />
                 </View>
 
@@ -102,21 +147,32 @@ export default function NewSesion() {
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Flechas por Set</Text>
                     <TextInput
-                        style={[styles.numeric_input]}
+                        style={[styles.numeric_input,styleView.styles.numeric_input]}
                         keyboardType="numeric"
-                        onChangeText={()=>{}}
-                        value={"3"}
+                        onChangeText={(value)=>{setArrows(value)}}
+                        value={arrows.toString()}
                         selectionColor={Colors.colorBlue2}
+
+                        onPress={()=>setEndButtonVisible("none")}
+                        onPressIn={()=>setEndButtonVisible("none")}
+                        onEndEditing={()=>setEndButtonVisible("flex")}
+                        onBlur={()=>setEndButtonVisible("flex")}
+                        onSubmitEditing={()=>setEndButtonVisible("flex")}
                     />
                 </View>
             </ScrollView>
             <BlueButton 
                 text="Continuar" 
-                style={{marginBottom: 10}}
+                style={{position:"absolute",bottom:0,marginBottom: 10, display:endButtonVisible}}
                 onPress={()=>{
                     console.log("continuar:")
                     console.log("_______________________")
                     console.log(date)
+                    console.log(distance)
+                    console.log(bow)
+                    console.log(pound)
+                    console.log(sets)
+                    console.log(arrows)
                 }}
                 >
             </BlueButton>
@@ -128,7 +184,7 @@ export default function NewSesion() {
                 visible={isModalVisible} 
                 visibleFunction={() => setModalVisible(false)}
             />
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -172,6 +228,7 @@ const styles = StyleSheet.create({
         height:80,
         flexDirection: "column",
         alignContent:"center",
+        marginTop:5
     },
     option_text:{
         fontSize:20,
@@ -179,23 +236,26 @@ const styles = StyleSheet.create({
         fontWeight:"500",
         textAlign:"center",
         alignSelf:"center",
+        
     },
     central_button:{
-        backgroundColor:Colors.colorBlue4,
-        borderWidth:1,
-        borderColor:Colors.colorBlue3,
-        borderRadius:20,
+        borderWidth:3,
+        borderRadius:10,
+        height: 45,
         flexDirection:"row", 
         padding:0,
         alignSelf:"center",
-        justifyContent:"center"
+        justifyContent:"center",
     },
     button_change_date:{
-        height: 40,
+        position:"relative",
+        height: 45,
         width:40,
+        left:-3,
+        top:-3,
         justifyContent: "center",
         backgroundColor:"transparent",
-        borderRadius:100,
+        borderRadius:10,
     },
     option_input:{
         width:50,
@@ -203,13 +263,10 @@ const styles = StyleSheet.create({
     },
 
     numeric_input:{
-        backgroundColor:Colors.colorBlue4,
-        borderColor:Colors.colorBlue3,
-        borderWidth:1,
+        borderWidth:3,
         width:150,
-        borderRadius:100,
+        borderRadius:10,
         alignSelf:"center",
-        color:Colors.colorBlue1,
         fontSize:20,
         fontWeight:500,
         textAlign:"center",

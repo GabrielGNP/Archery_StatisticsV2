@@ -1,18 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView } from 'react-native';
-
-
-import { whiteMode, darkMode, table_darkMode, table_whiteMode } from '../styles/screens/homePage/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../global/variables.js';
-import { Colors } from '../styles/colors.js';
-
-import { Feather } from '@expo/vector-icons';
-
-import Table from '../components/table.js';
-import LongSesion from '../components/infoSesion/longSesion.js';
-import Header from '../components/headers/header.js'
-import FooterHome from '../components/footers/footerHome.js';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import { whiteMode, darkMode, table_darkMode, table_whiteMode } from './styles/themeStyles.js';
+import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { Colors } from '../../global/colors.js';
+
+import Table from '../../components/tables/table.js';
+import LongSesion from '../../components/infoSesion/longSesion.js';
+import FooterHome from '../../components/footers/footerHome.js';
+
 export default function HomePage() {
 
     

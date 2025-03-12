@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView } from 'react-native';
-import { Colors } from '../../styles/colors.js'
+import { Colors } from '../../global/colors.js'
 
-import { whiteMode, darkMode} from '../../styles/components/headers/themeStyles.js';
+import { whiteMode, darkMode} from './styles/themeStyles.js';
 import { themeStyleView, switchStyleMode } from '../../global/variables.js';
 
 import { Feather } from '@expo/vector-icons';

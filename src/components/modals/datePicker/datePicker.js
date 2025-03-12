@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Dimensions } from "react-native";
-import { whiteMode, darkMode } from '../../styles/components/modals/datePad/themeStyles';
-import { themeStyleView } from '../../global/variables';
-import { Colors } from '../../styles/colors';
 import Modal from 'react-native-modal'
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from '@expo/vector-icons';
-import BlueButton from '../buttons/blueButton';
-import RedButton from "../buttons/redButton";
+
+import { whiteMode, darkMode } from './styles/themeStyles';
+import { themeStyleView } from '../../../global/variables';
+import { Colors } from '../../../global/colors';
+
+import BlueButton from '../../buttons/blueButton';
+import RedButton from "../../buttons/redButton";
 
   var gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
   var gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]

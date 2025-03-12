@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { whiteMode, darkMode } from '../../styles/screens/infoSesion/themeStyles';
+import { whiteMode, darkMode } from './styles/themeStyles';
 import { themeStyleView, switchStyleMode } from '../../global/variables';
 
 export default function LongSesion(prop) {

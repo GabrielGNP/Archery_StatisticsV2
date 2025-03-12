@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors } from '../../styles/colors';
+import { Colors } from '../../global/colors';
 
 export default function BlueButton(prop) {
     const { text, onPress, style, textSize = 30} = prop

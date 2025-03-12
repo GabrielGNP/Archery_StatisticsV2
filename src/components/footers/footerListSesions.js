@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView } from 'react-native';
-import { Colors } from '../../styles/colors.js'
-import { LinearGradient } from 'expo-linear-gradient';
-
-import { whiteMode, darkMode} from '../../styles/components/footers/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
-
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+
+import { Colors } from '../../global/colors.js'
+import { whiteMode, darkMode} from './styles/themeStyles.js';
+import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+
+
 
 export default function FooterListSesions(prop) {
 

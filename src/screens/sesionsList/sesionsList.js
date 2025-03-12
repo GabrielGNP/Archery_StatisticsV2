@@ -1,17 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView, Dimensions } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 
-import { whiteMode, darkMode} from '../styles/screens/sesionsList/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../global/variables.js';
-import { Colors } from '../styles/colors.js';
 
-import LongSesion from '../components/infoSesion/longSesion.js';
-import Header from '../components/headers/header.js'
-import MediumSesion from '../components/infoSesion/mediumSesion.js';
-import ShortSesion from '../components/infoSesion/shortSesion.js';
-import FooterListSesions from '../components/footers/footerListSesions.js';
-import { LinearGradient } from 'expo-linear-gradient';
+import { whiteMode, darkMode} from './styles/themeStyles.js';
+import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { Colors } from '../../global/colors.js';
+
+import LongSesion from '../../components/infoSesion/longSesion.js';
+import MediumSesion from '../../components/infoSesion/mediumSesion.js';
+import ShortSesion from '../../components/infoSesion/shortSesion.js';
+import FooterListSesions from '../../components/footers/footerListSesions.js';
+
 
 import { useNavigation } from '@react-navigation/native';
 

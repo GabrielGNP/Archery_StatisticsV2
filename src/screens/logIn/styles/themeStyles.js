@@ -1,5 +1,5 @@
 import { StyleSheet} from 'react-native';
-import { Colors } from '../../colors.js'
+import { Colors } from '../../../global/colors'
 
 export const whiteMode = {
     styles : StyleSheet.create({

@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { Colors } from '../styles/colors.js'
-import BlueButton from '../components/buttons/blueButton.js'
 import { LinearGradient } from 'expo-linear-gradient';
-
-import { whiteMode, darkMode } from '../styles/screens/logIn/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../global/variables.js';
-
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+
+import { Colors } from '../../global/colors.js'
+import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { whiteMode, darkMode } from './styles/themeStyles.js';
+
+import BlueButton from '../../components/buttons/blueButton.js'
 
 export default function LogIn() {
 

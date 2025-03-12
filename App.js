@@ -1,8 +1,7 @@
-import LogIn from './src/screens/logIn';
-import HomePage from './src/screens/homePage';
-
-import SesionsList from './src/screens/sesionsList';
-import NewSesion from './src/screens/newSesion';
+import LogIn from './src/screens/logIn/logIn.js';
+import HomePage from './src/screens/homePage/homePage.js';
+import SesionsList from './src/screens/sesionsList/sesionsList';
+import NewSesion from './src/screens/newSesion/newSesion.js';
 
 
 import * as React from 'react';
@@ -10,7 +9,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Colors } from './src/styles/colors';
+import { Colors } from './src/global/colors.js';
 import UserIcon from './src/components/headers/userIcon';
 import OptionsMenu from './src/components/headers/optionsMenu';
 import { Feather } from '@expo/vector-icons';
@@ -88,7 +87,7 @@ const NavigationBar = (title, backButton) =>{
 
 function RootStack() {
   return (
-    <Stack.Navigator initialRouteName="NewSesion">
+    <Stack.Navigator initialRouteName="LogIn">
         <Stack.Screen name="LogIn" component={LogIn} options={{title: "", headerTransparent:true,statusBarStyle: statusBarTheme, statusBarBackgroundColor: logInStatusBarColor}}/>
         <Stack.Screen name="Home" component={HomePage} options={NavigationBar("Archery Statistcs", false)}/>
         <Stack.Screen name="SesionsList" component={SesionsList} options={NavigationBar("Sesiones de tiro", true)}/>
