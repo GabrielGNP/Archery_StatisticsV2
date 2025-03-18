@@ -11,28 +11,28 @@ import { Colors } from '../../../global/colors';
 import BlueButton from '../../buttons/blueButton';
 import RedButton from "../../buttons/redButton";
 
-  var gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
-  var gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
-  var styleView = whiteMode
-  if(themeStyleView=="whiteMode"){
-	  styleView = whiteMode
-	  gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
-	  gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
-  }else{
-	  styleView = darkMode
-	  gradientColorsTop = [Colors.colorBlue4,"transparent"]
-	  gradientColorsBottom = ["transparent", Colors.colorBlue4]
-  }
-   const { width, height } = Dimensions.get("window");
+var gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
+var gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
+var styleView = whiteMode
+if(themeStyleView=="whiteMode"){
+	styleView = whiteMode
+	gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
+	gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
+}else{
+	styleView = darkMode
+	gradientColorsTop = [Colors.colorBlue4,"transparent"]
+	gradientColorsBottom = ["transparent", Colors.colorBlue4]
+}
+const { width, height } = Dimensions.get("window");
 // Constantes ajustadas para mostrar exactamente 5 elementos
 const ITEM_WIDTH = 40; // Ancho de cada elemento
 const ITEMS_TO_SHOW = 5; // Número de elementos visibles
 const VIEWPORT_WIDTH = ITEM_WIDTH * ITEMS_TO_SHOW; // Ancho total basado en 5 elementos
 
 const DatePicker = ({ date = new Date(), onConfirm, onCancel, visible, visibleFunction}) => {
-  const [selectedDay, setSelectedDay] = useState(date.getDate());
-  const [selectedMonth, setSelectedMonth] = useState(date.getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState(date.getFullYear());
+	const [selectedDay, setSelectedDay] = useState(date.getDate());
+	const [selectedMonth, setSelectedMonth] = useState(date.getMonth() + 1);
+	const [selectedYear, setSelectedYear] = useState(date.getFullYear());
 
   const generateDaysArray = () => {
 	const daysArray = Array.from({ length: 31 }, (_, i) => i + 1);
@@ -240,8 +240,11 @@ const DatePicker = ({ date = new Date(), onConfirm, onCancel, visible, visibleFu
 			  
 			  const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
 			  const validDay = Math.min(selectedDay, daysInMonth);
-			  
-			  onConfirm(new Date(selectedYear, selectedMonth - 1, validDay));
+			  var dateConfirmed = new Date()
+			  dateConfirmed.setFullYear(selectedYear)
+			  dateConfirmed.setDate(validDay)
+			  dateConfirmed.setMonth(selectedMonth - 1)
+			  onConfirm(dateConfirmed);
 			  visibleFunction();
 			}}></BlueButton>
 		</View>

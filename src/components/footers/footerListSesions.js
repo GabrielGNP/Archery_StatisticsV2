@@ -76,12 +76,12 @@ const styles = StyleSheet.create({
     container_icon_footer_special:{
         position:"relative",
         top:-20,
-        height: 70,
+        height: 75,
         width:75,
         justifyContent: "center",
         backgroundColor:"transparent",
-        borderRadius:100
-
+        borderRadius:100,
+        elevation:5
     },
     centralButton:{
         backgroundColor:"transparent",

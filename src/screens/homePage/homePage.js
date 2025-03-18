@@ -12,8 +12,22 @@ import FooterHome from '../../components/footers/footerHome.js';
 
 export default function HomePage() {
 
-    
-
+    var session1={
+        date:new Date(2024,8,9),
+        bow: "Recurvo",
+        bound: 45,
+        distance: 70,
+        setsList:[[8,7,8,6,9,8],[7,8,8,7,9,9],[7,8,8,10,9,"X"]],
+        record:"second",
+    }
+    var session2={
+        date:new Date(2025,2,18),
+        bow: "De poleas",
+        bound: 40,
+        distance: 50,
+        setsList:[[8,7,8],[7,8,8],[7,8,8],[7,9,9],[10,9,"X"]],
+        record:"first",
+    }
 
     var styleView = whiteMode
     var stylesTable = table_darkMode
@@ -64,13 +78,7 @@ export default function HomePage() {
             <View style={styles.segment_view_1}>
                 <Text style={[styles.title_segment, styleView.styles.title_segment]}>Última sesión</Text>
                 <LongSesion 
-                    date="30/08/2025"
-                    arrows="00000"
-                    points="00000"
-                    distance="70m"
-                    bowType="recurvo"
-                    power="40lb"
-                    record="second"
+                    session={session1}
                     >
                 </LongSesion>
             </View>
@@ -78,13 +86,7 @@ export default function HomePage() {
             <View style={styles.segment_view_1}>
                 <Text style={[styles.title_segment, styleView.styles.title_segment]}>Mejor sesión</Text>
                 <LongSesion 
-                    date="30/08/2025"
-                    arrows="60"
-                    points="250"
-                    distance="70m"
-                    bowType="recurvo"
-                    power="40lb"
-                    record="first"
+                    session={session2}
                     >
                 </LongSesion>
             </View>

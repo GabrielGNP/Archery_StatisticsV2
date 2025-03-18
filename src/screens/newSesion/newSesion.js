@@ -18,18 +18,11 @@ export default function NewSesion() {
     const [endButtonVisible, setEndButtonVisible] = useState("flex");
     const [date, setDate] = useState(new Date());
     const [distance, setDistance] = useState(70);
-    const [bow, setBow] = useState("recurvo");
+    const [bow, setBow] = useState("Recurvo");
     const [pound, setPound] = useState(35);
-    const [sets, setSets] = useState(10);
+    const [sets, setSets] = useState(3);
     const [arrows, setArrows] = useState(3);
 
-    useEffect(() => {
-        const hideListener = Keyboard.addListener("keyboardDidHide", () => setEndButtonVisible("flex"))
-
-        return () => {
-            hideListener.remove();
-        }
-    },[])
 
     var viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
     var styleView = whiteMode
@@ -38,13 +31,10 @@ export default function NewSesion() {
     }else{
         styleView = darkMode
     }
- 
-    function showButton(){
-        setEndButtonVisible(true)
-    }
-    function hideButton(){
-        setEndButtonVisible(false)
-    }
+  
+    useEffect(()=>{
+        console.log(date)
+    },[date])
     return(
         <KeyboardAvoidingView style={[styles.Main_container,styleView.styles.Main_container]} behavior="none">
             <ScrollView style={styles.first_container}>
@@ -75,12 +65,7 @@ export default function NewSesion() {
                             onChangeText={(value)=>{setDistance(value)}}
                             value={distance.toString()}
                             selectionColor={Colors.colorBlue2}
-
-                            onPress={()=>setEndButtonVisible("none")}
-                            onPressIn={()=>setEndButtonVisible("none")}
-                            onEndEditing={()=>setEndButtonVisible("flex")}
-                            onBlur={()=>setEndButtonVisible("flex")}
-                            onSubmitEditing={()=>setEndButtonVisible("flex")}
+                            
                         />
                         <Text style={[styles.option_text,styleView.styles.option_text]}>mts</Text>
                     </View>
@@ -96,12 +81,6 @@ export default function NewSesion() {
                         onChangeText={(value)=>{setBow(value)}}
                         value={bow}
                         selectionColor={Colors.colorBlue2}
-
-                        onPress={()=>setEndButtonVisible("none")}
-                        onPressIn={()=>setEndButtonVisible("none")}
-                        onEndEditing={()=>setEndButtonVisible("flex")}
-                        onBlur={()=>setEndButtonVisible("flex")}
-                        onSubmitEditing={()=>setEndButtonVisible("flex")}
                     />
                 </View>
 
@@ -114,12 +93,6 @@ export default function NewSesion() {
                             keyboardType="numeric"
                             onChangeText={(value)=>{setPound(value)}}
                             value={pound.toString()}
-
-                            onPress={()=>setEndButtonVisible("none")}
-                            onPressIn={()=>setEndButtonVisible("none")}
-                            onEndEditing={()=>setEndButtonVisible("flex")}
-                            onBlur={()=>setEndButtonVisible("flex")}
-                            onSubmitEditing={()=>setEndButtonVisible("flex")}
                         />
                         <Text style={[styles.option_text,styleView.styles.option_text,{marginRight:15}]}>lb</Text>
                     </View>
@@ -134,12 +107,6 @@ export default function NewSesion() {
                         onChangeText={(value)=>{setSets(value)}}
                         value={sets.toString()}
                         selectionColor={Colors.colorBlue2}
-
-                        onPress={()=>setEndButtonVisible("none")}
-                        onPressIn={()=>setEndButtonVisible("none")}
-                        onEndEditing={()=>setEndButtonVisible("flex")}
-                        onBlur={()=>setEndButtonVisible("flex")}
-                        onSubmitEditing={()=>setEndButtonVisible("flex")}
                     />
                 </View>
 
@@ -152,30 +119,25 @@ export default function NewSesion() {
                         onChangeText={(value)=>{setArrows(value)}}
                         value={arrows.toString()}
                         selectionColor={Colors.colorBlue2}
-
-                        onPress={()=>setEndButtonVisible("none")}
-                        onPressIn={()=>setEndButtonVisible("none")}
-                        onEndEditing={()=>setEndButtonVisible("flex")}
-                        onBlur={()=>setEndButtonVisible("flex")}
-                        onSubmitEditing={()=>setEndButtonVisible("flex")}
                     />
                 </View>
+                <BlueButton 
+                    text="Continuar"    
+                    style={{bottom:0,marginTop: 20, alignSelf:"center",display:endButtonVisible}}
+                    onPress={()=>{
+                        navigation.navigate("ActiveSession", {
+                            date:date,
+                            distance:distance,
+                            bow:bow,
+                            pound:pound,
+                            sets:sets,
+                            arrows:arrows})
+                        
+                    }}
+                    >
+                </BlueButton>   
             </ScrollView>
-            <BlueButton 
-                text="Continuar" 
-                style={{position:"absolute",bottom:0,marginBottom: 10, display:endButtonVisible}}
-                onPress={()=>{
-                    console.log("continuar:")
-                    console.log("_______________________")
-                    console.log(date)
-                    console.log(distance)
-                    console.log(bow)
-                    console.log(pound)
-                    console.log(sets)
-                    console.log(arrows)
-                }}
-                >
-            </BlueButton>
+            
             {/* <DatePad visible={isModalVisible} visibleFunction={() => setModalVisible(false)}></DatePad> */}
             <DatePicker
                 date={date}

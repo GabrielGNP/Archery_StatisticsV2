@@ -1,7 +1,7 @@
 export var Colors = {
     colorBlue1 : '#C1D3F7',
     // colorBlue2 : '#4A9AFF',
-    colorBlue2 : '#5197ff',
+    colorBlue2 : '#5195ff',
     colorBlue3 : '#245287',
     colorBlue4 : '#21314D',
     colorBack1 : '#FFFFFF',

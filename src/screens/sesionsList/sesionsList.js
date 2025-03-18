@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView, Dimensi
 
 
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { themeStyleView, switchStyleMode, exampleListSessions } from '../../global/variables.js';
 import { Colors } from '../../global/colors.js';
 
 import LongSesion from '../../components/infoSesion/longSesion.js';
@@ -26,44 +26,52 @@ export default function SesionsList() {
         styleView = darkMode
     }
 
-
-    var typeViewSesions = "short"
-
-    var listSesions = [
-        ["30/09/2024",45,398,"100m","de poleas","45lb","thirt"],
-        ["30/08/2024",30,300,"70m","recurvo","35lb","first"],
-        ["29/08/2024",30,298,"70m","recurvo","35lb","second"],
-        ["28/08/2024",30,292,"70m","recurvo","35lb","thirt"],
-        ["27/08/2024",45,402,"100m","de poleas","45lb","nothing"],
-        ["26/08/2024",45,397,"100m","de poleas","45lb","nothing"],
-        ["31/09/2024",45,398,"100m","de poleas","45lb","thirt"],
-        ["32/08/2024",30,300,"70m","recurvo","35lb","first"],
-        ["23/08/2024",30,298,"70m","recurvo","35lb","second"],
-        ["24/08/2024",30,292,"70m","recurvo","35lb","thirt"],
-        ["25/08/2024",45,402,"100m","de poleas","45lb","nothing"],
-        ["36/08/2024",45,397,"100m","de poleas","45lb","nothing"],
-    ]
+    var typeViewSesions = "long"
+    var listSesions = []
+    
+    exampleListSessions.forEach((session)=>{
+        var day = session.date.getDate()
+        var month = (parseInt(session.date.getMonth())+1).toString();
+        var year = session.date.getFullYear()
+        if (month.length == 1)
+            month = "0"+month
+        var date = day+"/"+month+"/"+year
+        var points = 0
+        var arrows = 0
+        session.setsList.forEach((set) =>{
+            set.forEach((point) => {
+                if (point=="X" || point=="x")
+                    points=points+10;
+                else if (point=="-")
+                    points=points+0;
+                else
+                    points=points+point;
+                arrows++
+            })
+        })
+        listSesions.push([date,arrows,points,session.distance,session.bow,session.pound,session.record,session])
+    })
 
     var listObjectSesions = []
     switch (typeViewSesions) {
         case "long":
-            listSesions.forEach(sesion =>{
+            exampleListSessions.forEach(session =>{
                 listObjectSesions.push(
-                    <LongSesion key={sesion[0]} date={sesion[0]} arrows={sesion[1]} points={sesion[2]} distance={sesion[3]} bowType={sesion[4]} power={sesion[5]} record={sesion[6]}></LongSesion>
+                    <LongSesion key={session.date.toString()} session={session}></LongSesion>
                 )
             })
             break;
         case "medium":
-            listSesions.forEach(sesion =>{
+            exampleListSessions.forEach(session =>{
                 listObjectSesions.push(
-                    <MediumSesion key={sesion[0]} date={sesion[0]} arrows={sesion[1]} points={sesion[2]} distance={sesion[3]} bowType={sesion[4]} power={sesion[5]} record={sesion[6]}></MediumSesion>
+                    <MediumSesion key={session.date.toString()} session={session}></MediumSesion>
                 )
             })
             break;
         case "short":
-            listSesions.forEach(sesion =>{
+            exampleListSessions.forEach(session =>{
                 listObjectSesions.push(
-                    <ShortSesion key={sesion[0]} date={sesion[0]} arrows={sesion[1]} points={sesion[2]} distance={sesion[3]} bowType={sesion[4]} power={sesion[5]} record={sesion[6]}></ShortSesion>
+                    <ShortSesion key={session.date.toString()} session={session}></ShortSesion>
                 )
             })
             break;

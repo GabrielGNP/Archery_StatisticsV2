@@ -17,7 +17,7 @@ export const whiteMode = {
             backgroundColor: Colors.colorBack1
         },        
     }),
-    icon_menu_color: Colors.colorBack3
+    icon_menu_color: Colors.colorBack1
 }
 
 
@@ -32,8 +32,8 @@ export const darkMode = {
             
         },
         userIcon:{
-            backgroundColor: Colors.colorBlue1
+            backgroundColor: Colors.colorBack2
         },
     }),
-    icon_menu_color: Colors.colorBlue1
+    icon_menu_color: Colors.colorBlue2
 }

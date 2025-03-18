@@ -1,11 +1,20 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
 import { themeStyleView, switchStyleMode } from '../../global/variables';
 
 export default function LongSesion(prop) {
 
-    const {date="30/08/2024", arrows=0, points=0, distance="0m", bowType="nothing", power="0lb", record="nothing"} = prop
+    const navigation = useNavigation();
+    const {session={
+        date:new Date(2024,0,1),
+        bow: "Recurvo",
+        pound: 35,
+        distance: 20,
+        setsList:[[10,10,10,10,10,10],[10,10,10,10,10,10],["X","X","X","X","X","X"]],
+        record:"second",
+    }} = prop
 
     var styleView = darkMode
     if(themeStyleView=="whiteMode"){
@@ -13,9 +22,31 @@ export default function LongSesion(prop) {
     }else{
         styleView = darkMode
     }
+    //obtener y transformar fecha
+    var day = session.date.getDate()
+    var month = (parseInt(session.date.getMonth())+1).toString();
+    var year = session.date.getFullYear()
+    if (month.length == 1)
+        month = "0"+month
+    var date = day+"/"+month+"/"+year
+
+    //obtener puntaje y flechas
+    var arrows = 0
+    var points = 0
+    session.setsList.forEach((set) =>{
+        set.forEach((point) => {
+            if (point=="X" || point=="x")
+                points=points+10;
+            else if (point=="-")
+                points=points+0;
+            else
+                points=points+point;
+            arrows++
+        })
+    })
 
     var iconRecord
-    switch (record) {
+    switch (session.record) {
         case "first":
             iconRecord = "🥇"
             break;
@@ -33,7 +64,9 @@ export default function LongSesion(prop) {
     return (
         <TouchableOpacity 
             style={[stylesBasic.container, styleView.styles.container]}
-            onPress = {() => console.log("algo")}
+            onPress = {() => {
+                navigation.navigate("ViewSession", {session:session})
+            }}
             >
             <View style={stylesBasic.icon}>
                 <Text style={{flex: 1, textAlign: "center", fontSize: 40}}>{iconRecord}</Text>
@@ -55,15 +88,15 @@ export default function LongSesion(prop) {
             <View style={[stylesBasic.row, styleView.styles.row]}>
             <View style={[stylesBasic.cell, styleView.styles.cell]}>
                     <Text style={[stylesBasic.title, styleView.styles.title]}>Distancia</Text>
-                    <Text style={[stylesBasic.data, styleView.styles.data]}>{distance}</Text>
+                    <Text style={[stylesBasic.data, styleView.styles.data]}>{session.distance}</Text>
                 </View>
                 <View style={[stylesBasic.cell, styleView.styles.cell]}>
                     <Text style={[stylesBasic.title, styleView.styles.title]}>Arco</Text>
-                    <Text style={[stylesBasic.data, styleView.styles.data]}>{bowType}</Text>
+                    <Text style={[stylesBasic.data, styleView.styles.data]}>{session.bow}</Text>
                 </View>
                 <View style={[stylesBasic.cell, styleView.styles.cell]}>
                     <Text style={[stylesBasic.title, styleView.styles.title]}>Libraje</Text>
-                    <Text style={[stylesBasic.data, styleView.styles.data]}>{power}</Text>
+                    <Text style={[stylesBasic.data, styleView.styles.data]}>{session.pound}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -84,7 +117,7 @@ const stylesBasic = StyleSheet.create({
         right:-5,
         top:0,
         width:50,
-        height:50,
+        height:55,
     },
     row:{
         flexDirection:"row",
