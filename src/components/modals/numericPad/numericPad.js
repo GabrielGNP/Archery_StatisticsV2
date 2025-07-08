@@ -16,7 +16,7 @@ else{
 }
 
 export default function NumericPad(prop) {
-    const {visible = false,posToChange,listSets, setListSets, reloadData, setViewNumPad} = prop
+    const {visible = false,posToChange,listSets, setListSets, reloadData, setViewNumPad, typeSession} = prop
     var newListSets = listSets
 
     function changeValue(value){
@@ -26,6 +26,19 @@ export default function NumericPad(prop) {
         reloadData()
         setViewNumPad(false)
     }
+    var listButtons = []
+    var countKey = 0;
+    typeSession.points.forEach(point => {
+        countKey++;
+        listButtons.unshift(
+            <TouchableOpacity 
+                key = {countKey}
+                style={styles.button} 
+                onPress={()=>{changeValue(point)}}
+            >
+                <Text style={styles.text_button}>{point}</Text>
+            </TouchableOpacity>)
+        });
     return(
         <Modal 
                 isVisible={visible}
@@ -36,26 +49,11 @@ export default function NumericPad(prop) {
                 style={{margin:0}}
             >
             <View style={[styles.container_modal,styleView.styles.container_modal]}>
-                <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(8)}}><Text style={styles.text_button}>8</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(9)}}><Text style={styles.text_button}>9</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(10)}}><Text style={styles.text_button}>10</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue("X")}}><Text style={styles.text_button}>X</Text></TouchableOpacity>
-                    <View style={styles.button_transparent}></View>
+                <View style={{flexDirection:"row-reverse", flexWrap:"wrap", width:"80%", justifyContent:"center", alignContent:"center"}}>
+                    {listButtons}
                 </View>
-                <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(4)}}><Text style={styles.text_button}>4</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(5)}}><Text style={styles.text_button}>5</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(6)}}><Text style={styles.text_button}>6</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(7)}}><Text style={styles.text_button}>7</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue("-")}}><Text style={styles.text_button}>-</Text></TouchableOpacity>
-                </View>
-                <View style={styles.row}>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(0)}}><Text style={styles.text_button}>0</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(1)}}><Text style={styles.text_button}>1</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(2)}}><Text style={styles.text_button}>2</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue(3)}}><Text style={styles.text_button}>3</Text></TouchableOpacity>
-                    <View style={styles.button_transparent}></View>
+                <View style={{justifyContent:"center"}}>
+                    <TouchableOpacity style={styles.button} onPress={()=>{changeValue("_")}}><Text style={styles.text_button}>_</Text></TouchableOpacity>
                 </View>
             </View>
         </Modal>
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
         borderStartStartRadius:50,
         borderEndStartRadius:50,
         borderRadius:50,
-        flexDirection:"column",
+        flexDirection:"row",
         padding: 20,
         borderWidth:2,
     },

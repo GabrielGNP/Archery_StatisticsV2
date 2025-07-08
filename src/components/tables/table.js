@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
 export default function Table(prop) {
-    const { titles, data , stylesTable, selected} = prop
+    const { titles, data , stylesTable={}, selected} = prop
     //styles.table
     //  son los estilos de la tabla general
     //
@@ -32,13 +32,15 @@ export default function Table(prop) {
     
     function buildRow(dataRow, selected){
         var data_row = []
+        var count = 0
         dataRow.forEach( data => {
             if(selected == true)
             {
-                data_row.push(<Text key={data} style={[stylesBasic.data_selected, stylesTable.data_selected]}>{data}</Text>)
+                data_row.push(<Text key={countRow+"_"+count} style={[stylesBasic.data_selected, stylesTable.data_selected]}>{data}</Text>)
             }
             else
-                data_row.push(<Text key={data} style={[stylesBasic.data, stylesTable.data]}>{data}</Text>)
+                data_row.push(<Text key={countRow+"_"+count} style={[stylesBasic.data, stylesTable.data]}>{data}</Text>)
+            count++
         })
         return data_row;
     }
@@ -88,7 +90,7 @@ export default function Table(prop) {
             <View style={[stylesBasic.titles_row, stylesTable.titles_row]}>
                 {titles_cells}
             </View>
-            <View style={stylesBasic.container_rows}/*container de rows de datos*/>
+            <View style={[stylesBasic.container_rows,stylesTable.container_rows]}/*container de rows de datos*/>
                 {datas_rows}
             </View>
         </View>
@@ -104,12 +106,11 @@ const stylesBasic = StyleSheet.create({
         flexDirection:"row",
         borderBottomColor: "white",
         borderBottomWidth: 1,
-        padding: 5
     },
     title:{
         flex: 1,
         textAlign: "center",
-        fontSize:20
+        fontSize:20,
     },
 
     container_rows:{
@@ -118,12 +119,12 @@ const stylesBasic = StyleSheet.create({
     data_row:{
         flexDirection: "row",
         paddingTop:3,
-        paddingBottom: 3
+        paddingBottom: 3,
     },
     data_row_selected:{
         flexDirection: "row",
         paddingTop:3,
-        paddingBottom: 3
+        paddingBottom: 3,
     },
     data:{
         flex: 1,

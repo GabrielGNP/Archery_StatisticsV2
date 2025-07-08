@@ -1,12 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { Colors } from '../styles/colors.js'
-import BlueButton from '../components/blueButton.js'
-import { LinearGradient } from 'expo-linear-gradient';
-
-import { whiteMode, darkMode } from '../styles/screens/homePage/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../global/variables.js';
 
 import { Feather } from '@expo/vector-icons';
 

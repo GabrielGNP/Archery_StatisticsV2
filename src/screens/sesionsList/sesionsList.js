@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView, Dimensi
 
 
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode, exampleListSessions } from '../../global/variables.js';
+import { themeStyleView, switchStyleMode, exampleListSessions, modelViewSesions } from '../../global/variables.js';
 import { Colors } from '../../global/colors.js';
 
 import LongSesion from '../../components/infoSesion/longSesion.js';
@@ -26,7 +26,7 @@ export default function SesionsList() {
         styleView = darkMode
     }
 
-    var typeViewSesions = "long"
+    var typeViewSesions = modelViewSesions
     var listSesions = []
     
     exampleListSessions.forEach((session)=>{

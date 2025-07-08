@@ -7,7 +7,7 @@ import { whiteMode, darkMode } from "./styles/themeStyles"
 
 
 export default function Set(prop){
-    const {numberSet, setPoints, setPosToChange } = prop
+    const {numberSet, setPoints, setPosToChange, typeSession} = prop
 
     var styleView = whiteMode
     if(themeStyleView=="whiteMode"){
@@ -31,15 +31,10 @@ export default function Set(prop){
             count++
         });
         setPoints.forEach((value)=>{
-            if(value=="-")
-                // setTotalPoints(totalPoints+0)
+            if(value=="_")
                 totalPoints=totalPoints+0
-            else if(value=="X" || value=="x")
-                // setTotalPoints(totalPoints+10)
-            totalPoints=totalPoints+10
             else
-                // setTotalPoints(totalPoints+value)
-                totalPoints=totalPoints+value
+                totalPoints=totalPoints+typeSession.values[typeSession.points.indexOf(value)]
         })
     }
 

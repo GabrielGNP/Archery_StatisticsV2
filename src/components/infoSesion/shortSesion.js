@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { themeStyleView, switchStyleMode } from '../../global/variables';
+import { themeStyleView, switchStyleMode, typeSesionsList } from '../../global/variables';
 
 export default function ShortSesion(prop) {
 
@@ -14,6 +14,7 @@ export default function ShortSesion(prop) {
         distance: 20,
         setsList:[[10,10,10,10,10,10],[10,10,10,10,10,10],["X","X","X","X","X","X"]],
         record:"second",
+        typeSession
     },} = prop
 
     var styleView = darkMode
@@ -34,14 +35,15 @@ export default function ShortSesion(prop) {
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
+    var typeSession = typeSesionsList.find(item => item.id === session.typeSession);
+    console.log(typeSession);
     session.setsList.forEach((set) =>{
         set.forEach((point) => {
-            if (point=="X" || point=="x")
-                points=points+10;
-            else if (point=="-")
-                points=points+0;
+                if(point=="_")
+                points=points+0
             else
-                points=points+point;
+                points=points+typeSession.values[typeSession.points.indexOf(point)]
+            
             arrows++
         })
     })
@@ -131,6 +133,9 @@ export default function ShortSesion(prop) {
                     <Text style={[stylesBasic.title_2, styleView.styles.title_2]}>puntaje</Text>
                     <Text style={[stylesBasic.data, styleView.styles.data]}>{points}</Text>
                 </View>
+            </View>
+            <View>
+                <Text style={[stylesBasic.title_2, styleView.styles.title_2]}>{typeSession.name}</Text>
             </View>
         </TouchableOpacity>
     )

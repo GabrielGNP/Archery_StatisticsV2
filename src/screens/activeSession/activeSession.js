@@ -24,13 +24,15 @@ if(themeStyleView=="whiteMode"){
 }
 
 export default function ActiveSession({route}){
-    const { date, distance, bow, pound, sets, arrows} = route.params
+    const { date, distance, bow, pound, sets, arrows, sessionType} = route.params
+
+    console.log(sessionType);
 
     var auxListSets = []
     for (let set = 0; set < sets; set++) {
         var auxArrows = []
         for (let arrow = 0; arrow < arrows; arrow++) {
-            auxArrows.push("-")
+            auxArrows.push("_")
         }
         auxListSets.push(auxArrows)
     }
@@ -59,13 +61,20 @@ export default function ActiveSession({route}){
         distance: distance,
         setsList:listSets,
         record:"-",
+        typeSession:sessionType.id
     }
 
     function createSets(){
         var auxComponentSets = []
         var count = 0
         listSets.forEach(set => {
-            auxComponentSets.push(<Set key={count} numberSet={count} setPoints={set} setPosToChange={setPosToChange}></Set>)
+            auxComponentSets.push(
+                <Set key={count} 
+                    numberSet={count} 
+                    setPoints={set} 
+                    setPosToChange={setPosToChange} 
+                    typeSession={sessionType}>
+                </Set>)
             count++
         });
         console.log(auxComponentSets)
@@ -159,7 +168,13 @@ export default function ActiveSession({route}){
             </View>
             
             <FooterActiveSession addNewSet={() => {addNewSet()}}></FooterActiveSession>
-            <NumericPad visible={viewNumPad} posToChange={posToChange} listSets={listSets} setListSets={()=>{setListSets}} reloadData={()=>{createSets()}} setViewNumPad={() => {setViewNumPad(false)}}></NumericPad>
+            <NumericPad visible={viewNumPad} 
+                posToChange={posToChange} 
+                listSets={listSets} 
+                setListSets={()=>{setListSets}} 
+                reloadData={()=>{createSets()}} 
+                setViewNumPad={() => {setViewNumPad(false)}}
+                typeSession={sessionType} />
         </View>
     )
 }

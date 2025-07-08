@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { themeStyleView, switchStyleMode } from '../../global/variables';
+import { themeStyleView, switchStyleMode, typeSesionsList } from '../../global/variables';
 
 export default function LongSesion(prop) {
 
@@ -14,6 +14,7 @@ export default function LongSesion(prop) {
         distance: 20,
         setsList:[[10,10,10,10,10,10],[10,10,10,10,10,10],["X","X","X","X","X","X"]],
         record:"second",
+        typeSession:0
     }} = prop
 
     var styleView = darkMode
@@ -33,17 +34,21 @@ export default function LongSesion(prop) {
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
+    var typeSession = typeSesionsList.find(item => item.id === session.typeSession);
+    console.log("session=>",session.typeSession);
+    console.log("typeSession=>",typeSession);
+    console.log("======");
     session.setsList.forEach((set) =>{
         set.forEach((point) => {
-            if (point=="X" || point=="x")
-                points=points+10;
-            else if (point=="-")
-                points=points+0;
-            else
-                points=points+point;
+            if(point=="_")
+                points=points+0
+            else{
+                points=points+typeSession.values[typeSession.points.indexOf(point)]   
+            }
             arrows++
         })
     })
+
 
     var iconRecord
     switch (session.record) {
@@ -63,13 +68,16 @@ export default function LongSesion(prop) {
 
     return (
         <TouchableOpacity 
-            style={[stylesBasic.container, styleView.styles.container]}
+            style={[stylesBasic.container, styleView.styles.container, {paddingTop:0}]}
             onPress = {() => {
                 navigation.navigate("ViewSession", {session:session})
             }}
             >
             <View style={stylesBasic.icon}>
                 <Text style={{flex: 1, textAlign: "center", fontSize: 40}}>{iconRecord}</Text>
+            </View>
+            <View>
+                <Text style={[stylesBasic.title, styleView.styles.title, {fontSize:15}]}>{typeSession.name}</Text>
             </View>
             <View style={[stylesBasic.row, styleView.styles.row]}>
                 <View style={[stylesBasic.cell, styleView.styles.cell]}>

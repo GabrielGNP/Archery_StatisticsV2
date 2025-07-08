@@ -1,28 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, ScrollView, KeyboardAvoidingView, Keyboard} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { themeStyleView, switchStyleMode, typeSesionsList } from '../../global/variables.js';
 import { Colors } from '../../global/colors.js';
 
 import BlueButton from '../../components/buttons/blueButton.js';
 import DatePicker from '../../components/modals/datePicker/datePicker.js';
+import OptionSelector from '../../components/modals/optionSelector/optionSelector.js';
+
+
 
 export default function NewSesion() {
-
+    let sessionsList = [];
+    let bowsList = ["Recurvo", "Poleas", "Longbow", "Poleas (Interior)"];
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
+    const [modalOptions1, setModalOptions1] = useState(false);
+    const [modalOptions2, setModalOptions2] = useState(false);
     const [endButtonVisible, setEndButtonVisible] = useState("flex");
     const [date, setDate] = useState(new Date());
     const [distance, setDistance] = useState(70);
-    const [bow, setBow] = useState("Recurvo");
     const [pound, setPound] = useState(35);
     const [sets, setSets] = useState(3);
     const [arrows, setArrows] = useState(3);
-
+    const sessionSelected = useRef(0);
+    const bowSelected = useRef(0);
 
     var viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
     var styleView = whiteMode
@@ -32,6 +38,10 @@ export default function NewSesion() {
         styleView = darkMode
     }
   
+    typeSesionsList.forEach(session => {
+        sessionsList.push(session.name);
+    })
+
     useEffect(()=>{
         console.log(date)
     },[date])
@@ -55,48 +65,62 @@ export default function NewSesion() {
                     </TouchableOpacity>
                 </View>
                 
-                {/*Input de Distancia*/}
-                <View style={styles.option}>
-                    <Text style={[styles.option_text,styleView.styles.option_text]}>Distancia</Text>
-                    <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
-                        <TextInput
-                            style={[styles.numeric_input,styleView.styles.numeric_input,{marginLeft:50}]}
-                            keyboardType="numeric"
-                            onChangeText={(value)=>{setDistance(value)}}
-                            value={distance.toString()}
-                            selectionColor={Colors.colorBlue2}
-                            
-                        />
-                        <Text style={[styles.option_text,styleView.styles.option_text]}>mts</Text>
-                    </View>
+                {/*Input de Sesión*/}
+                <View style={[styles.option]}>
+                    <Text style={[styles.option_text,styleView.styles.option_text]}>Tipo de sesión</Text>
+                    <TouchableOpacity 
+                            style={[styles.central_button, styleView.styles.central_button, {width:250}]}
+                            onPress={() => {setModalOptions1(true)}}
+                        >
+                        <Text style={[styles.option_text,styleView.styles.option_text]}>{sessionsList[sessionSelected.current]}</Text>
+                        <Text style={[styles.option_text,styleView.styles.option_text,{fontWeight:"bold",fontSize:20,position:"absolute", right:0}]}>v</Text>
+                    </TouchableOpacity>
                 </View>
 
+                <View style={{flexDirection:"row"}}>
+                    {/*Input de Distancia*/}
+                    <View style={[styles.option, {width:"50%"}]}>
+                        <Text style={[styles.option_text,styleView.styles.option_text,{width:"100%", textAlign:"left", paddingLeft:50}]}>Distancia</Text>
+                        <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
+                            <TextInput
+                                style={[styles.numeric_input,styleView.styles.numeric_input,{marginLeft:50, width:100}]}
+                                keyboardType="numeric"
+                                onChangeText={(value)=>{setDistance(value)}}
+                                value={distance.toString()}
+                                selectionColor={Colors.colorBlue2}
+                                
+                            />
+                            <Text style={[styles.option_text,styleView.styles.option_text]}>mts</Text>
+                        </View>
+                    </View>
+                    {/*Input de Libraje*/}
+                    <View style={[styles.option, {width:"50%"}]}>
+                        <Text style={[styles.option_text,styleView.styles.option_text, {width:"100%", textAlign:"left", paddingLeft:40}]}>Libraje</Text>
+                        <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
+                            <TextInput
+                                style={[styles.numeric_input,styleView.styles.numeric_input,{marginLeft:25, width:100}]}
+                                keyboardType="numeric"
+                                onChangeText={(value)=>{setPound(value)}}
+                                value={pound.toString()}
+                            />
+                            <Text style={[styles.option_text,styleView.styles.option_text,{marginRight:15}]}>lb</Text>
+                        </View>
+                    </View>
+                </View>
+                
                 {/*Input de Arco*/}
                 <View style={styles.option}>
                     <Text style={[styles.option_text,styleView.styles.option_text]}>Arco</Text>
-                    <TextInput
-                        style={[styles.numeric_input,styleView.styles.numeric_input]}
-                        keyboardType="default"
-                        spellCheck={false}
-                        onChangeText={(value)=>{setBow(value)}}
-                        value={bow}
-                        selectionColor={Colors.colorBlue2}
-                    />
+                    <TouchableOpacity 
+                            style={[styles.central_button, styleView.styles.central_button, {width:250}]}
+                            onPress={() => {setModalOptions2(true)}}
+                        >
+                        <Text style={[styles.option_text,styleView.styles.option_text]}>{bowsList[bowSelected.current]}</Text>
+                        <Text style={[styles.option_text,styleView.styles.option_text,{fontWeight:"bold",fontSize:20,position:"absolute", right:0}]}>v</Text>
+                    </TouchableOpacity>
                 </View>
 
-                {/*Input de Libraje*/}
-                <View style={styles.option}>
-                    <Text style={[styles.option_text,styleView.styles.option_text]}>Libraje</Text>
-                    <View style={{flexDirection:"row",alignItems:"center", justifyContent:"center"}}>
-                        <TextInput
-                            style={[styles.numeric_input,styleView.styles.numeric_input,{marginLeft:50}]}
-                            keyboardType="numeric"
-                            onChangeText={(value)=>{setPound(value)}}
-                            value={pound.toString()}
-                        />
-                        <Text style={[styles.option_text,styleView.styles.option_text,{marginRight:15}]}>lb</Text>
-                    </View>
-                </View>
+                
 
                 {/*Input de Cantidad de Sets*/}
                 <View style={styles.option}>
@@ -125,14 +149,22 @@ export default function NewSesion() {
                     text="Continuar"    
                     style={{bottom:0,marginTop: 20, alignSelf:"center",display:endButtonVisible}}
                     onPress={()=>{
+                        var auxSession = {}
+                        typeSesionsList.forEach(session => {
+                            if (session.name == sessionsList[sessionSelected.current]) 
+                            {
+                                auxSession = session
+                            }
+                        })
                         navigation.navigate("ActiveSession", {
                             date:date,
                             distance:distance,
-                            bow:bow,
+                            bow:bowsList[bowSelected.current],
                             pound:pound,
                             sets:sets,
-                            arrows:arrows})
-                        
+                            arrows:arrows,
+                            sessionType:auxSession
+                        })
                     }}
                     >
                 </BlueButton>   
@@ -146,6 +178,21 @@ export default function NewSesion() {
                 visible={isModalVisible} 
                 visibleFunction={() => setModalVisible(false)}
             />
+            <OptionSelector 
+                onCancel={() => console.log("Cancelado")}
+                visible={modalOptions1} 
+                visibleFunction={() => setModalOptions1(false)}
+                selectedOption={sessionSelected}
+                listOptions={sessionsList}
+            />
+            <OptionSelector 
+                onCancel={() => console.log("Cancelado")}
+                visible={modalOptions2} 
+                visibleFunction={() => setModalOptions2(false)}
+                selectedOption={bowSelected}
+                listOptions={bowsList}
+            />
+
         </KeyboardAvoidingView>
     )
 }

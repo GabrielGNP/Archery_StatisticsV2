@@ -15,18 +15,20 @@ export default function HomePage() {
     var session1={
         date:new Date(2024,8,9),
         bow: "Recurvo",
-        bound: 45,
+        pound: 45,
         distance: 70,
-        setsList:[[8,7,8,6,9,8],[7,8,8,7,9,9],[7,8,8,10,9,"X"]],
+        setsList:[["8","7","8","6","9","8"],["7","8","8","7","9","9"],["7","8","8","10","9","X"]],
         record:"second",
+        typeSession:0
     }
     var session2={
         date:new Date(2025,2,18),
         bow: "De poleas",
-        bound: 40,
+        pound: 40,
         distance: 50,
-        setsList:[[8,7,8],[7,8,8],[7,8,8],[7,9,9],[10,9,"X"]],
+        setsList:[["8","7","8"],["7","8","8"],["7","8","8"],["7","9","9"],["10","9","X"]],
         record:"first",
+        typeSession:0
     }
 
     var styleView = whiteMode
