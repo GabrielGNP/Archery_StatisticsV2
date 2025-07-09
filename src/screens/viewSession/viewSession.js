@@ -42,56 +42,51 @@ export default function ViewSession({route}){
     var points = 0
     var pointsCount = new Array(typeSession.points.length+1).fill(0);
     var titlesTable = []
-    var countSets = 0
 
-    var sesionDataInTable = [];
-    sesionDataInTable = [...session.setsList];
-    var numberArrowsPerSet = [];
-    var newSessionData = [
-        sesionDataInTable[0], // Mantiene el primer array sin cambios
-        ...sesionDataInTable.slice(1).map(row => {
-          const totalPoint = row.reduce((sum, point) => {
-            return !isNaN(point) ? sum + point : sum;
-          }, 0);
-          return [...row, totalPoint];
-        })
-      ];
+    titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Flecha</Text>);
     for (let i = 1; i < session.setsList[0].length+1; i++) {
-        numberArrowsPerSet.push(i)
+        titlesTable.push(<Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>{i}</Text>)
     }
-    numberArrowsPerSet.push("suma")
-    console.log("--> ", numberArrowsPerSet);
-    newSessionData.unshift(numberArrowsPerSet);
-    console.log("--> ", newSessionData);
+    titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Total</Text>)
+    // console.log("titlesTable=>",titlesTable)
     
-    
-    
-    titlesTable.push("Flecha");
-    session.setsList.forEach((set) =>{ //De sesiones
-        titlesTable.push("Set" + ++countSets)
-        set.forEach((point) => { //De flechas
+
+    var rowsSets = []
+
+    session.setsList.forEach((set, indexSet) =>{ //De sesiones
+        var cellInRow = []
+        var pointInSet = 0
+        cellInRow.push(<Text style={[styles.name_info_table,{width:60}]}>{"Set" + (indexSet+1)}</Text>)
+        set.forEach((point, indexArr) => { //De flechas
             if(point=="_"){
                 points=points+0
+                pointInSet = pointInSet + 0
                 pointsCount[typeSession.points.length] = pointsCount[typeSession.points.length]+1;
             }
             else{
-                points=points+typeSession.values[typeSession.points.indexOf(point)]
+                var pointShot = typeSession.values[typeSession.points.indexOf(point)]
+                points=points+pointShot
+                pointInSet = pointInSet + pointShot
                 pointsCount[typeSession.points.indexOf(point)] = pointsCount[typeSession.points.indexOf(point)]+1;
             }
+            cellInRow.push(<Text key={indexArr} style={styles.data_info_table}>{point}</Text>)
             arrows++
         })
+        cellInRow.push(<Text style={[styles.data_info_table,{width:60, backgroundColor:Colors.colorBlue3, color:Colors.colorBlue1}]}>{pointInSet}</Text>)
+        rowsSets.push(
+            <View style={{flexDirection:DirectionLineTable, alignItems:"center"}}>
+                {cellInRow}
+            </View>)
     })
+    
 
     let maxCellsPR = 6
     let cantRows = Math.ceil(typeSession.points.length / maxCellsPR)
-    console.log(pointsCount.slice().reverse())
-    console.log("cantRows=>"+cantRows)
     let heightContainer = 75*cantRows
     let heightCell = 100/cantRows
     let cellsCountArrows = []
 
     pointsCount.slice().reverse().forEach((item, index) => {
-        console.log(cantRows, ">", Math.floor((index-1) / maxCellsPR))
         if(cantRows > Math.floor((index-1) / maxCellsPR)+1 && index>0)
         {
             cellsCountArrows.push(
@@ -118,7 +113,7 @@ export default function ViewSession({route}){
             )
         }
     })
-    console.log("heightContainer=>"+heightContainer)
+
     let tableCountArrows = 
     <View style={{height:heightContainer, width:"100%", marginTop:30, padding:10, 
         flexDirection:"row", justifyContent:"center", alignContent:"space-around",
@@ -136,8 +131,8 @@ export default function ViewSession({route}){
     </View>
 
     var averages = points/arrows
-    console.log(titlesTable)
-    console.log(countSets)
+  
+
     return(
         <View style={[styles.main_container, styleView.styles.main_container]}>
             <View style={[styles.date_container,styleView.styles.date_container]}>
@@ -145,6 +140,7 @@ export default function ViewSession({route}){
             </View>
             <ScrollView style={{flex: 1}} nestedScrollEnabled={true}>
                 
+                {/*Datos de sesión */}
                 <View style={styles.data_session}>
                     <View style={[styles.data_container_row,styles.data_center]}>
                         <View style={styles.data}>
@@ -182,6 +178,7 @@ export default function ViewSession({route}){
                 {tableCountArrows}
                 
                 {/* ==== Tabla de puntos por set ==== */}
+                {/*Botones de dirección */}
                 <View style={styles.container_direction_buttons}>
                     <Text style={{color:Colors.colorBlue1, fontSize:18, fontWeight:600, marginRight:10}}>Ordenar</Text>
                     <TouchableOpacity 
@@ -207,6 +204,7 @@ export default function ViewSession({route}){
                         <Feather name="arrow-down" size={30} color={Colors.colorBlue4} style={{flex: 1, textAlign: "center"}}/>
                     </TouchableOpacity>
                 </View>
+                {/*Tabla de datos */}
                 <ScrollView style={{maxHeight: 400}}
                     horizontal={true} 
                     nestedScrollEnabled={true} 
@@ -215,39 +213,12 @@ export default function ViewSession({route}){
                     <View style={{flexDirection:DirectionContainerTable, margin:10}}>
                         {/*top*/}
                         <View style={{flexDirection:DirectionLineTable}}>
-                            <Text style={[styles.name_info_table,{width:60}]}>flecha</Text>
-                            <Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>1</Text>
-                            <Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>2</Text>
-                            <Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>3</Text>
-                            <Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>4</Text>
-                            <Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>5</Text>
-                            <Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>6</Text>
-                            <Text style={[styles.name_info_table,{width:60}]}>total</Text>
+                            {titlesTable}
                         </View>
                         <ScrollView style={{backgroundColor:Colors.colorBlue4}} nestedScrollEnabled={true} contentContainerStyle={{flexGrow: 1}}>
                             {/*linea*/}
                             <View style={{flexDirection:DirectionContainerTable}}>
-                                <View style={{flexDirection:DirectionLineTable, alignItems:"center"}}>
-                                    <Text style={[styles.name_info_table,{width:60}]}>set 1</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={styles.data_info_table}>9</Text>
-                                    <Text style={styles.data_info_table}>8</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={styles.data_info_table}>8</Text>
-                                    <Text style={styles.data_info_table}>7</Text>
-                                    <Text style={[styles.data_info_table,{width:60, backgroundColor:Colors.colorBlue3, color:Colors.colorBlue1}]}>52</Text>    
-                                </View>
-                                {/*linea*/}
-                                <View style={{flexDirection:DirectionLineTable, alignItems:"center"}}>
-                                    <Text style={[styles.name_info_table,{width:60}]}>set 100</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={styles.data_info_table}>10</Text>
-                                    <Text style={[styles.data_info_table,{width:60, backgroundColor:Colors.colorBlue3, color:Colors.colorBlue1}]}>10000</Text>    
-                                </View>
+                                {rowsSets}
                             </View>
                         </ScrollView>
                     </View>
