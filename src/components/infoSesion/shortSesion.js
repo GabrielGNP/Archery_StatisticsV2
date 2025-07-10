@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { themeStyleView, switchStyleMode, typeSesionsList } from '../../global/variables';
+import { configBasic, switchStyleMode, typeSesionsList } from '../../global/variables';
 
 export default function ShortSesion(prop) {
 
@@ -18,7 +18,7 @@ export default function ShortSesion(prop) {
     },} = prop
 
     var styleView = darkMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode

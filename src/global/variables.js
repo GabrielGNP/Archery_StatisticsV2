@@ -1,21 +1,19 @@
+import { darkMode } from "../screens/logIn/styles/themeStyles"
 
-//whiteMode
-//darkMode
-export var themeStyleView = "darkMode"
-
-export function switchStyleMode(){
-    if(themeStyleView == "whiteMode")
-    {
-        themeStyleView = "darkMode"
-    }
-    else
-    {
-        themeStyleView = "whiteMode"
-    }
-        
+export var configBasic = {
+    userID : -1,
+    darkMode : false,
+    modelViewSesions : "long" //"long", "medium", "short"
 }
-
-export var modelViewSesions = "medium" //"long", "medium", "short"
+// ========================= 
+//whiteMode = false
+//darkMode = true
+export function switchStyleMode(){
+    if(configBasic.darkMode == true)
+        configBasic.darkMode = false
+    else
+        configBasic.darkMode = true
+}
 
 export var exampleListSessions =[
     {

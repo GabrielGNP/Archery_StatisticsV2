@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react"
 import {View, StyleSheet, Text, TouchableOpacity} from "react-native"
 
-import { themeStyleView } from "../../global/variables"
+import { configBasic } from "../../global/variables"
 import { Colors } from "../../global/colors"
 import { whiteMode, darkMode } from "./styles/themeStyles"
 
@@ -10,7 +10,7 @@ export default function Set(prop){
     const {numberSet, setPoints, setPosToChange, typeSession} = prop
 
     var styleView = whiteMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode

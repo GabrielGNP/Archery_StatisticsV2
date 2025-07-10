@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode, typeSesionsList } from '../../global/variables.js';
+import { configBasic, switchStyleMode, typeSesionsList } from '../../global/variables.js';
 import { Colors } from '../../global/colors.js';
 
 import BlueButton from '../../components/buttons/blueButton.js';
@@ -32,7 +32,7 @@ export default function NewSesion() {
 
     var viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
     var styleView = whiteMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode

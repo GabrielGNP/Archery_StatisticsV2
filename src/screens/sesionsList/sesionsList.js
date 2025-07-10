@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView, Dimensi
 
 
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode, exampleListSessions, modelViewSesions } from '../../global/variables.js';
+import { configBasic, switchStyleMode, exampleListSessions} from '../../global/variables.js';
 import { Colors } from '../../global/colors.js';
 
 import LongSesion from '../../components/infoSesion/longSesion.js';
@@ -20,15 +20,16 @@ export default function SesionsList() {
 
     var viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
     var styleView = whiteMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode
     }
 
-    var typeViewSesions = modelViewSesions
+    var typeViewSesions = configBasic.modelViewSesions
     var listSesions = []
-    
+    console.log(configBasic.modelViewSesions);
+    console.log(typeViewSesions);
     exampleListSessions.forEach((session)=>{
         var day = session.date.getDate()
         var month = (parseInt(session.date.getMonth())+1).toString();

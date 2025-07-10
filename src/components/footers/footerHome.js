@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Colors } from '../../global/colors.js'
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { configBasic, switchStyleMode } from '../../global/variables.js';
 
 
 
@@ -16,7 +16,7 @@ export default function FooterHome(prop) {
 
     var styleView = whiteMode
     var colorIcon = Colors.colorBlue2
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
         colorIcon = Colors.colorBlue2
     }else{

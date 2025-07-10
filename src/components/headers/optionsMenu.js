@@ -3,14 +3,14 @@ import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView } from '
 import { Colors } from '../../global/colors.js'
 
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { configBasic, switchStyleMode } from '../../global/variables.js';
 
 import { Feather } from '@expo/vector-icons';
 
 export default function OptionsMenu() {
 
     var styleView = whiteMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode

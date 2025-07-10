@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView } from '
 import { Colors } from '../../global/colors.js'
 
 import { whiteMode, darkMode} from '../../styles/components/headers/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { configBasic, switchStyleMode } from '../../global/variables.js';
 
 import { Feather } from '@expo/vector-icons';
 
@@ -12,7 +12,7 @@ export default function Header(prop) {
     const {title="Archery Statistics", size=23, flex=1} = prop
 
     var styleView = whiteMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode

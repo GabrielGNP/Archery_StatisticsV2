@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import Modal from "react-native-modal"
 
-import { themeStyleView } from '../../../global/variables';
+import { configBasic } from '../../../global/variables';
 import { whiteMode, darkMode } from './styles/themeStyles';
 import { backgroundColor } from '../../sets/styles/themeStyles';
 import { Colors } from '../../../global/colors';
 
 var styleView = whiteMode
-if (themeStyleView == "whiteMode"){
+if (configBasic.darkMode == false){
     styleView = whiteMode
 }
 else{

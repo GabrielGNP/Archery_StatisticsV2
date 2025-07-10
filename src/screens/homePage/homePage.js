@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView } from '
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { whiteMode, darkMode, table_darkMode, table_whiteMode } from './styles/themeStyles.js';
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { configBasic, switchStyleMode } from '../../global/variables.js';
 import { Colors } from '../../global/colors.js';
 
 import Table from '../../components/tables/table.js';
@@ -34,7 +34,7 @@ export default function HomePage() {
     var styleView = whiteMode
     var stylesTable = table_darkMode
     var shadowBar = [Colors.colorBack2, "transparent"]
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
         stylesTable = table_whiteMode.styles
         shadowBar = [Colors.colorBack2, "transparent"]
@@ -55,6 +55,7 @@ export default function HomePage() {
         ></LinearGradient>
         <ScrollView style={styles.content_view}>
 
+            {/* Tabla de clasificación */}
             <View style={styles.segment_view_1}>
                 <Text style={[styles.title_segment, styleView.styles.title_segment]}>Clasificación General</Text>
                 <Table 
@@ -66,6 +67,7 @@ export default function HomePage() {
                 </Table>
             </View>
 
+            {/* Puntaje de la semana y cantidad de flechas */}
             <View style={[styles.segment_view_2,styleView.styles.segment_view_2]}>
                 <View style={[styles.segment_text_view,styleView.styles.segment_text_view]}>
                     <Text style={[styles.title_segment_2, styleView.styles.title_segment]}>Puntaje de la semana</Text>
@@ -77,6 +79,7 @@ export default function HomePage() {
                 </View>
             </View>
 
+            {/* Última sesión */}
             <View style={styles.segment_view_1}>
                 <Text style={[styles.title_segment, styleView.styles.title_segment]}>Última sesión</Text>
                 <LongSesion 
@@ -85,6 +88,7 @@ export default function HomePage() {
                 </LongSesion>
             </View>
 
+            {/* Mejor sesión */}
             <View style={styles.segment_view_1}>
                 <Text style={[styles.title_segment, styleView.styles.title_segment]}>Mejor sesión</Text>
                 <LongSesion 

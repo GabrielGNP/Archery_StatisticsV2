@@ -14,11 +14,12 @@ import { Colors } from './src/global/colors.js';
 import UserIcon from './src/components/headers/userIcon.js';
 import OptionsMenu from './src/components/headers/optionsMenu.js';
 import { Feather } from '@expo/vector-icons';
-import { themeStyleView, switchStyleMode } from './src/global/variables.js';
+import { configBasic, switchStyleMode } from './src/global/variables.js';
 import { useNavigation } from '@react-navigation/native';
 import IconsPage from './src/screens/icons.js';
 
-import { SQLiteDatabase, SQLiteProvider } from 'expo-sqlite';
+import { SQLiteProvider } from 'expo-sqlite';
+import { createTables, deleteTable } from './src/global/querys.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,7 @@ var statusBarColor = Colors.colorBlue2
 var logInStatusBarColor = Colors.colorBack2
 var statusBarTheme = "light"
 var arrowBackColor = Colors.colorBack1
-if(themeStyleView=="whiteMode"){
+if(configBasic.darkMode==false){
     gradientColors = [Colors.colorBlue2,Colors.colorBlue2]
     titleColor = Colors.colorBack3
     statusBarColor = Colors.colorBlue2
@@ -93,13 +94,8 @@ const defaultSession = {date:new Date,distance: "20",bow: "Recurvo",pound: "35",
 function RootStack() {
 
   const createDBIfNeeded = async (db) => {
-    await db.execAsync(
-      'CREATE TABLE IF NOT EXISTS "usuario" (	"id_usuario"	INTEGER NOT NULL UNIQUE,	"correo"	TEXT,	"contraseña"	TEXT,	"nombre"	TEXT,	"time_edit"	TEXT,	"time_sync"	TEXT,	PRIMARY KEY("id_usuario" AUTOINCREMENT));',
-      'CREATE TABLE IF NOT EXISTS "session" ("id_session"	INTEGER NOT NULL UNIQUE,"id_usuario"	NUMERIC NOT NULL,"fecha"	TEXT NOT NULL,"arco"	TEXT,"libraje"	INTEGER,"distancia"	INTEGER,"time_edit"	TEXT,"type_session"	INTEGER,PRIMARY KEY("id_session" AUTOINCREMENT),FOREIGN KEY("id_usuario") REFERENCES "usuario"("id_usuario"));',
-      'CREATE TABLE IF NOT EXISTS "type_session" (id_type_session"	INTEGER NOT NULL UNIQUE,"nombre"	TEXT,"[valores]"	TEXT,"time_edit"	TEXT,PRIMARY KEY("id_type_session" AUTOINCREMENT));',
-      'CREATE TABLE IF NOT EXISTS "sync_history" ("id_usuario"	INTEGER NOT NULL,"time_sync"	INTEGER,FOREIGN KEY("id_usuario") REFERENCES "usuario"("id_usuario"));',
-      'CREATE TABLE IF NOT EXISTS "set" ("id_session"	INTEGER NOT NULL,"[puntos]"	TEXT,FOREIGN KEY("id_session") REFERENCES "session"("id_session"));',
-  )}
+    createTables(db)
+  }
 
   return (
     <SQLiteProvider databaseName='archery.db' onInit={createDBIfNeeded}>

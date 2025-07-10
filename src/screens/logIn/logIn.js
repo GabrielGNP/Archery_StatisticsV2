@@ -5,13 +5,16 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { Colors } from '../../global/colors.js'
-import { themeStyleView, switchStyleMode } from '../../global/variables.js';
+import { configBasic, switchStyleMode} from '../../global/variables.js';
 import { whiteMode, darkMode } from './styles/themeStyles.js';
 
 import BlueButton from '../../components/buttons/blueButton.js'
+import { useSQLiteContext } from 'expo-sqlite';
+import { getUsuario, getAllDataTable, loadConfig, getAllUsers, insertConfig } from '../../global/querys.js';
 
 export default function LogIn() {
 
+  const db = useSQLiteContext();
   const navigation = useNavigation();
 
   const [userName, onChangeUserName] = React.useState("");
@@ -21,7 +24,7 @@ export default function LogIn() {
   var viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
   var viewContentColors = [Colors.colorBack2, Colors.colorBack2]
   var styleView = whiteMode
-  if(themeStyleView=="whiteMode"){
+  if(configBasic.darkMode==false){
     viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
     viewContentColors = [Colors.colorBack2, Colors.colorBack2]
     styleView = whiteMode
@@ -74,9 +77,23 @@ export default function LogIn() {
                 ></TextInput>
               </View>
               <View style={styles.container_button}>
-                <BlueButton text="Iniciar" onPress={() => {
-                  // navigation.replace("Home")
-                  navigation.navigate("Home")
+                <BlueButton text="Iniciar" onPress={async () => {
+                  console.log("=====")
+                  let id_user = await getUsuario(db, userName, password)
+                  if(typeof(id_user)=="number"){
+                    //navigation.replace("Home")
+                    configBasic.userID = id_user;
+                    let configLoaded = await loadConfig(db, id_user, "basic")
+                    if (configLoaded != null)
+                    {
+                      configBasic.darkMode = configLoaded.darkMode
+                      configBasic.modelViewSesions = configLoaded.modelViewSesions
+                    }
+                    
+                    navigation.navigate("Home")
+                  }else{
+                    console.log("Error al iniciar sesion", id_user)
+                  }
                 }}></BlueButton>
               </View>
             </LinearGradient>

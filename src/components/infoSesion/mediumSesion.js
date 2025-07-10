@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { themeStyleView, switchStyleMode, typeSesionsList } from '../../global/variables';
+import { configBasic, switchStyleMode, typeSesionsList } from '../../global/variables';
 
 export default function MediumSesion(prop) {
 
@@ -18,7 +18,7 @@ export default function MediumSesion(prop) {
     }, } = prop
 
     var styleView = darkMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode
@@ -36,9 +36,6 @@ export default function MediumSesion(prop) {
     var arrows = 0
     var points = 0
     var typeSession = typeSesionsList.find(item => item.id === session.typeSession);
-    console.log("session=>",session.typeSession);
-    console.log("typeSession=>",typeSession);
-    console.log("======");
     session.setsList.forEach((set) =>{
         set.forEach((point) => {
             if(point=="_")

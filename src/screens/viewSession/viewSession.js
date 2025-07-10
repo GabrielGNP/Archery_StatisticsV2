@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import { View,Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 
 import { whiteMode, darkMode} from "./styles/themeStyles"
-import { themeStyleView, typeSesionsList } from "../../global/variables"
+import { configBasic, typeSesionsList } from "../../global/variables"
 import { Colors } from "../../global/colors"
 import { Feather, FontAwesome } from '@expo/vector-icons';
 
@@ -13,7 +13,7 @@ export default function ViewSession({route}){
     console.log(session)
 
     var styleView = whiteMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode

@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native"
 import { useNavigation } from '@react-navigation/native';
 
 import { Colors } from "../../global/colors"
-import { themeStyleView } from "../../global/variables";
+import { configBasic } from "../../global/variables";
 import {whiteMode, darkMode} from "./styles/themeStyles"
 
 import BlueButton from "../buttons/blueButton"
@@ -15,7 +15,7 @@ export default function FooterActiveSession(prop){
     const navigation = useNavigation();
 
     var styleView = whiteMode
-    if(themeStyleView=="whiteMode"){
+    if(configBasic.darkMode==false){
         styleView = whiteMode
     }else{
         styleView = darkMode

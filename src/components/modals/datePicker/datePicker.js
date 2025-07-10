@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from '@expo/vector-icons';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { themeStyleView } from '../../../global/variables';
+import { configBasic } from '../../../global/variables';
 import { Colors } from '../../../global/colors';
 
 import BlueButton from '../../buttons/blueButton';
@@ -14,7 +14,7 @@ import RedButton from "../../buttons/redButton";
 var gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
 var gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
 var styleView = whiteMode
-if(themeStyleView=="whiteMode"){
+if(configBasic.darkMode==false){
 	styleView = whiteMode
 	gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
 	gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]

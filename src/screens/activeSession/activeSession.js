@@ -1,7 +1,7 @@
 import React ,{useState, useEffect, useRef } from "react"
 import { View, StyleSheet, Text, FlatList, ScrollView } from "react-native"
 
-import { exampleListSessions, themeStyleView } from "../../global/variables"
+import { exampleListSessions, configBasic } from "../../global/variables"
 import { whiteMode, darkMode } from "./styles/themeStyles"
 import { Colors } from "../../global/colors"
 
@@ -13,7 +13,7 @@ import NumericPad from "../../components/modals/numericPad/numericPad"
 var gradientColorsTop = [Colors.colorBlue3,Colors.colorBlue2]
 var gradientColorsBottom = [Colors.colorBlue3,Colors.colorBlue2]
 var styleView = whiteMode
-if(themeStyleView=="whiteMode"){
+if(configBasic.darkMode==false){
     styleView = whiteMode
     gradientColorsTop = [Colors.colorBack2,"transparent"]
     gradientColorsBottom = ["transparent",Colors.colorBack2]
