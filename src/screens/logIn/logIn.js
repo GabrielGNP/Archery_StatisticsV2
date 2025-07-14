@@ -80,6 +80,7 @@ export default function LogIn() {
                 <BlueButton text="Iniciar" onPress={async () => {
                   console.log("=====")
                   let id_user = await getUsuario(db, userName, password)
+                  
                   if(typeof(id_user)=="number"){
                     //navigation.replace("Home")
                     configBasic.userID = id_user;
@@ -87,7 +88,7 @@ export default function LogIn() {
                     if (configLoaded != null)
                     {
                       configBasic.darkMode = configLoaded.darkMode
-                      configBasic.modelViewSesions = configLoaded.modelViewSesions
+                      // configBasic.modelViewSesions = configLoaded.modelViewSesions
                     }
                     
                     navigation.navigate("Home")

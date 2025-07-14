@@ -3,7 +3,7 @@ import { darkMode } from "../screens/logIn/styles/themeStyles"
 export var configBasic = {
     userID : -1,
     darkMode : false,
-    modelViewSesions : "long" //"long", "medium", "short"
+    modelViewSesions : "medium" //"long", "medium", "short"
 }
 // ========================= 
 //whiteMode = false
@@ -56,13 +56,13 @@ export var exampleListSessions =[
 
 export var typeSesionsList = [
     {
-        id:0,
+        id:1,
         name:"Clásico",
         points:["0","1","2","3","4","5","6","7","8","9","10","X"],
         values:[0,1,2,3,4,5,6,7,8,9,10,10]
     },
     {
-        id:1,
+        id:2,
         name:"4 puntos",
         points:["X","-","+","✓"],
         values:[0,1,2,3],

@@ -24,20 +24,14 @@ export default function MediumSesion(prop) {
         styleView = darkMode
     }
 
-    //obtener y transformar fecha
-    var day = session.date.getDate()
-    var month = (parseInt(session.date.getMonth())+1).toString();
-    var year = session.date.getFullYear()
-    if (month.length == 1)
-        month = "0"+month
-    var date = day+"/"+month+"/"+year
-
+    var date = session.date
+    
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
-    var typeSession = typeSesionsList.find(item => item.id === session.typeSession);
+    var typeSession = typeSesionsList.find(item => item.id === session.type_session);
     session.setsList.forEach((set) =>{
-        set.forEach((point) => {
+        set.points.forEach((point) => {
             if(point=="_")
                 points=points+0
             else{
@@ -46,34 +40,34 @@ export default function MediumSesion(prop) {
             arrows++
         })
     })
-
+    
     var procesedDate = date.split("/")
     switch (procesedDate[1]) {
-        case "01":
+        case "01", "1":
             procesedDate[1]="Enero"
             break;
-        case "02":
+        case "02", "2":
             procesedDate[1]="Febrero"
             break;
-        case "03":
+        case "03", "3":
             procesedDate[1]="Marzo"
             break;
-        case "04":
+        case "04", "4":
             procesedDate[1]="Abril"
             break;
-        case "05":
+        case "05", "5":
             procesedDate[1]="Mayo"
             break;
-        case "06":
+        case "06", "6":
             procesedDate[1]="Junio"
             break;
-        case "07":
+        case "07", "7":
             procesedDate[1]="Julio"
             break;
-        case "08":
+        case "08", "8":
             procesedDate[1]="Agosto"
             break;
-        case "09":
+        case "09", "9":
             procesedDate[1]="Septiembre"
             break;
         case "10":

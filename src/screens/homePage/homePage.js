@@ -82,19 +82,19 @@ export default function HomePage() {
             {/* Última sesión */}
             <View style={styles.segment_view_1}>
                 <Text style={[styles.title_segment, styleView.styles.title_segment]}>Última sesión</Text>
-                <LongSesion 
+                {/* <LongSesion 
                     session={session1}
                     >
-                </LongSesion>
+                </LongSesion> */}
             </View>
 
             {/* Mejor sesión */}
             <View style={styles.segment_view_1}>
                 <Text style={[styles.title_segment, styleView.styles.title_segment]}>Mejor sesión</Text>
-                <LongSesion 
+                {/* <LongSesion 
                     session={session2}
                     >
-                </LongSesion>
+                </LongSesion> */}
             </View>
 
         </ScrollView>

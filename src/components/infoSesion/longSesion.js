@@ -8,7 +8,8 @@ export default function LongSesion(prop) {
 
     const navigation = useNavigation();
     const {session={
-        date:new Date(2024,0,1),
+        id_session: 1,
+        date: "9/8/2024",
         bow: "Recurvo",
         pound: 35,
         distance: 20,
@@ -24,20 +25,21 @@ export default function LongSesion(prop) {
         styleView = darkMode
     }
     //obtener y transformar fecha
-    var day = session.date.getDate()
-    var month = (parseInt(session.date.getMonth())+1).toString();
-    var year = session.date.getFullYear()
-    if (month.length == 1)
-        month = "0"+month
-    var date = day+"/"+month+"/"+year
+    // var day = session.date.getDate()
+    // var month = (parseInt(session.date.getMonth())+1).toString();
+    // var year = session.date.getFullYear()
+    // if (month.length == 1)
+    //     month = "0"+month
+    // var date = day+"/"+month+"/"+year
+    var date = session.date
 
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
-    var typeSession = typeSesionsList.find(item => item.id === session.typeSession);
+    var typeSession = typeSesionsList.find(item => item.id === session.type_session);
 
     session.setsList.forEach((set) =>{
-        set.forEach((point) => {
+        set.points.forEach((point) => {
             if(point=="_")
                 points=points+0
             else{

@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import IconsPage from './src/screens/icons.js';
 
 import { SQLiteProvider } from 'expo-sqlite';
-import { createTables, deleteTable } from './src/global/querys.js';
+import { createTables, deleteAllTables } from './src/global/querys.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +94,7 @@ const defaultSession = {date:new Date,distance: "20",bow: "Recurvo",pound: "35",
 function RootStack() {
 
   const createDBIfNeeded = async (db) => {
+    deleteAllTables(db)
     createTables(db)
   }
 

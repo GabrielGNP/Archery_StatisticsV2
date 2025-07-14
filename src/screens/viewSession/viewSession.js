@@ -7,10 +7,19 @@ import { Colors } from "../../global/colors"
 import { Feather, FontAwesome } from '@expo/vector-icons';
 
 
+// id_session: 1,
+// date: "9/8/2024",
+// bow: "Recurvo",
+// pound: 35,
+// distance: 20,
+// setsList:[[10,10,10,10,10,10],[10,10,10,10,10,10],["X","X","X","X","X","X"]],
+// record:"second",
+// typeSession:0
+
 var directionRowTable = ""
 export default function ViewSession({route}){
     const {session} = route.params
-    console.log(session)
+    // console.log(session)
 
     var styleView = whiteMode
     if(configBasic.darkMode==false){
@@ -28,36 +37,42 @@ export default function ViewSession({route}){
     const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const formatSelectedDate = (day, month, year) => {
-        const monthName = months.find((_, index) => index === month) || "";
+        const monthName = months.find((_, index) => index === parseInt(month)) || "";
         if (day.toString().length==1)
             day="0"+day.toString()
         return `${day}  ${monthName}  ${year}`;
       };
-    const textDate = formatSelectedDate(session.date.getDate(),session.date.getMonth(),session.date.getFullYear())
+    var procesedDate = session.date.split("/")
+    const textDate = formatSelectedDate(procesedDate[0],procesedDate[1],procesedDate[2])
 
-    var typeSession = typeSesionsList.find(item => item.id === session.typeSession);
-
+    var typeSession = typeSesionsList.find(item => item.id === session.type_session);
+    console.log("49- typeSession=> ",typeSession)
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
     var pointsCount = new Array(typeSession.points.length+1).fill(0);
     var titlesTable = []
-
-    titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Flecha</Text>);
-    for (let i = 1; i < session.setsList[0].length+1; i++) {
-        titlesTable.push(<Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>{i}</Text>)
+    console.log("56- pointsCount=> ",pointsCount)
+    if (session.setsList.length>0){
+        titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Flecha</Text>);
+        for (let i = 1; i < session.setsList[0].points.length+1; i++) {
+            titlesTable.push(<Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>{i}</Text>)
+        }
+        titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Total</Text>)    
+    }else{
+        titlesTable.push(<Text style={[styles.name_info_table,{width:"100%"}]}>No existen sesiones</Text>)
     }
-    titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Total</Text>)
-    // console.log("titlesTable=>",titlesTable)
     
 
     var rowsSets = []
-
+    console.log("64- session.setsList => ",session.setsList)
+    console.log("65- session.setsList.length=>",session.setsList.length)
     session.setsList.forEach((set, indexSet) =>{ //De sesiones
         var cellInRow = []
         var pointInSet = 0
+        console.log("set => ", set)
         cellInRow.push(<Text style={[styles.name_info_table,{width:60}]}>{"Set" + (indexSet+1)}</Text>)
-        set.forEach((point, indexArr) => { //De flechas
+        set.points.forEach((point, indexArr) => { //De flechas
             if(point=="_"){
                 points=points+0
                 pointInSet = pointInSet + 0
@@ -130,7 +145,7 @@ export default function ViewSession({route}){
         </View>
     </View>
 
-    var averages = points/arrows
+    var averages = arrows > 0 ? points/arrows : 0; 
   
 
     return(

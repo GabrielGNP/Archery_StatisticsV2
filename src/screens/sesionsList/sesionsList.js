@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 
 
@@ -13,10 +13,21 @@ import FooterListSesions from '../../components/footers/footerListSesions.js';
 
 
 import { useNavigation } from '@react-navigation/native';
+import { readSessions } from '../../global/querys.js';
+import { useSQLiteContext } from 'expo-sqlite';
+// =========== TAREAS ===============
+// Reacomodar la DB (agregar las IDs a los sets) ✅
+// Cargar sessiones y sets por defecto en la DB ✅
+// Leer las sessiones en objetos (con los sets y su información)
+// Mostrarlos en el listado
 
 export default function SesionsList() {
 
     const navigation = useNavigation();
+    const db = useSQLiteContext();
+
+    const [listSesions, setListSessions] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     var viewGradientColors = [Colors.colorBlue2, Colors.colorBlue3]
     var styleView = whiteMode
@@ -25,58 +36,47 @@ export default function SesionsList() {
     }else{
         styleView = darkMode
     }
-
-    var typeViewSesions = configBasic.modelViewSesions
-    var listSesions = []
-    console.log(configBasic.modelViewSesions);
-    console.log(typeViewSesions);
-    exampleListSessions.forEach((session)=>{
-        var day = session.date.getDate()
-        var month = (parseInt(session.date.getMonth())+1).toString();
-        var year = session.date.getFullYear()
-        if (month.length == 1)
-            month = "0"+month
-        var date = day+"/"+month+"/"+year
-        var points = 0
-        var arrows = 0
-        session.setsList.forEach((set) =>{
-            set.forEach((point) => {
-                if (point=="X" || point=="x")
-                    points=points+10;
-                else if (point=="-")
-                    points=points+0;
-                else
-                    points=points+point;
-                arrows++
-            })
-        })
-        listSesions.push([date,arrows,points,session.distance,session.bow,session.pound,session.record,session])
-    })
-
-    var listObjectSesions = []
-    switch (typeViewSesions) {
-        case "long":
-            exampleListSessions.forEach(session =>{
-                listObjectSesions.push(
-                    <LongSesion key={session.date.toString()} session={session}></LongSesion>
-                )
-            })
-            break;
-        case "medium":
-            exampleListSessions.forEach(session =>{
-                listObjectSesions.push(
-                    <MediumSesion key={session.date.toString()} session={session}></MediumSesion>
-                )
-            })
-            break;
-        case "short":
-            exampleListSessions.forEach(session =>{
-                listObjectSesions.push(
-                    <ShortSesion key={session.date.toString()} session={session}></ShortSesion>
-                )
-            })
-            break;
+    
+    async function getSessions(){
+        try {
+            setLoading(true);
+            let sessions = await readSessions(db, configBasic.userID);
+            setListSessions(sessions || []);
+        } catch (error) {
+            console.error("Error al cargar sesiones:", error);
+            setListSessions([]);
+        } finally {
+            setLoading(false);
+        }
     }
+    
+    useEffect(()=>{
+        getSessions()
+    },[])
+    
+
+    const listObjectSesions = () => {
+        if (!listSesions || listSesions.length === 0) {
+            return <Text>No hay sesiones disponibles</Text>;
+        }
+        switch (configBasic.modelViewSesions) {
+            case "long":
+                return listSesions.map(session => (
+                    <LongSesion key={session.id_session} session={session} />
+                ));
+            case "medium":
+                return listSesions.map(session => (
+                    <MediumSesion key={session.id_session} session={session} />
+                ));
+            case "short":
+                return listSesions.map(session => (
+                    <ShortSesion key={session.id_session} session={session} />
+                ));
+            default:
+                return <Text>Modo de vista no válido</Text>;
+        }
+    }
+    
     return(
         <View style={[styles.Main_container, styleView.styles.Main_container]}>
             
@@ -86,7 +86,7 @@ export default function SesionsList() {
                     flexWrap:"wrap"
                 }}
                 >
-                {listObjectSesions}
+                {listObjectSesions()}
                 <View style={styles.limit_list}></View>
             </ScrollView>
             <FooterListSesions></FooterListSesions>
