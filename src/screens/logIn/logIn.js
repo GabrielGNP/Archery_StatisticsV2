@@ -5,12 +5,12 @@ import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { Colors } from '../../global/colors.js'
-import { configBasic, switchStyleMode} from '../../global/variables.js';
+import { configBasic, switchStyleMode, setTypeSessionsList, getTypeSessionsList} from '../../global/variables.js';
 import { whiteMode, darkMode } from './styles/themeStyles.js';
 
 import BlueButton from '../../components/buttons/blueButton.js'
 import { useSQLiteContext } from 'expo-sqlite';
-import { getUsuario, getAllDataTable, loadConfig, getAllUsers, insertConfig } from '../../global/querys.js';
+import { getUsuario, getAllTypeSessionsByUserId, loadConfig, getAllDataTable} from '../../global/querys.js';
 
 export default function LogIn() {
 
@@ -80,15 +80,28 @@ export default function LogIn() {
                 <BlueButton text="Iniciar" onPress={async () => {
                   console.log("=====")
                   let id_user = await getUsuario(db, userName, password)
-                  
+                  await getAllDataTable(db, "session")
                   if(typeof(id_user)=="number"){
                     //navigation.replace("Home")
                     configBasic.userID = id_user;
-                    let configLoaded = await loadConfig(db, id_user, "basic")
-                    if (configLoaded != null)
-                    {
-                      configBasic.darkMode = configLoaded.darkMode
-                      // configBasic.modelViewSesions = configLoaded.modelViewSesions
+                    try {
+                        let configLoaded = await loadConfig(db, id_user, "basic")
+                        // console.log(configLoaded);
+                        let typeSessionsLoaded = await getAllTypeSessionsByUserId(db, id_user);
+                        // console.debug(typeSessionsLoaded)
+                        if (configLoaded != null)
+                        {
+                            configBasic.darkMode = configLoaded.darkMode
+                            // configBasic.modelViewSesions = configLoaded.modelViewSesions
+                        }
+                        if(typeSessionsLoaded != null)
+                        {
+                            setTypeSessionsList(typeSessionsLoaded);
+                            // console.log(getTypeSessionsList());
+                        }
+                    } catch (error) {
+                        console.error("hubo un problema al cargar los datos del usuario")
+                        console.error(error)
                     }
                     
                     navigation.navigate("Home")

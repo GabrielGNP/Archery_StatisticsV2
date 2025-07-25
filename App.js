@@ -14,7 +14,7 @@ import { Colors } from './src/global/colors.js';
 import UserIcon from './src/components/headers/userIcon.js';
 import OptionsMenu from './src/components/headers/optionsMenu.js';
 import { Feather } from '@expo/vector-icons';
-import { configBasic, switchStyleMode } from './src/global/variables.js';
+import { configBasic } from './src/global/variables.js';
 import { useNavigation } from '@react-navigation/native';
 import IconsPage from './src/screens/icons.js';
 

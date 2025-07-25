@@ -15,7 +15,9 @@ export default function Set(prop){
     }else{
         styleView = darkMode
     }
-
+    // console.debug("n_set=>", numberSet)
+    // console.debug("n_set=>", setPoints)
+    // console.debug("typeSession=>", typeSession)
     var componentsButtonsPoints = []
     // const [totalPoints, setTotalPoints] = useState(0)
     var totalPoints = 0
@@ -24,7 +26,7 @@ export default function Set(prop){
         setPoints.forEach(point => {
             var valuePos = count
             componentsButtonsPoints.push(
-                <TouchableOpacity key={valuePos} style={[styles.number_button,styleView.styles.number_button]} onPress={() => {setPosToChange([numberSet,valuePos])}}>
+                <TouchableOpacity key={valuePos} style={[styles.number_button,styleView.styles.number_button]} onPress={() => {setPosToChange([numberSet-1,valuePos])}}>
                     <Text style={[styles.text_number_button,styleView.styles.text_number_button]}>{point}</Text>
                 </TouchableOpacity>
             )
@@ -45,7 +47,7 @@ export default function Set(prop){
             <View style={{width:75, height:100}}>
                 <View style={{}}>
                     <Text style={[styles.text,styleView.styles.text]}>Set</Text>
-                    <Text style={[styles.text,styleView.styles.text]}>{numberSet+1}</Text>
+                    <Text style={[styles.text,styleView.styles.text]}>{numberSet}</Text>
                 </View>
                 <View style={[styles.points_container,styleView.styles.points_container]}>
                     <Text style={[styles.text_total_points,styleView.styles.text_total_points]}>puntos</Text>

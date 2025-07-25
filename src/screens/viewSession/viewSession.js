@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import { View,Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 
 import { whiteMode, darkMode} from "./styles/themeStyles"
-import { configBasic, typeSesionsList } from "../../global/variables"
+import { configBasic, getTypeSessionsList } from "../../global/variables"
 import { Colors } from "../../global/colors"
 import { Feather, FontAwesome } from '@expo/vector-icons';
 
@@ -19,7 +19,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 var directionRowTable = ""
 export default function ViewSession({route}){
     const {session} = route.params
-    // console.log(session)
+    console.log(session)
 
     var styleView = whiteMode
     if(configBasic.darkMode==false){
@@ -45,14 +45,13 @@ export default function ViewSession({route}){
     var procesedDate = session.date.split("/")
     const textDate = formatSelectedDate(procesedDate[0],procesedDate[1],procesedDate[2])
 
-    var typeSession = typeSesionsList.find(item => item.id === session.type_session);
-    console.log("49- typeSession=> ",typeSession)
+    let typeSessionsList = getTypeSessionsList();
+    var typeSession = typeSessionsList.find(item => item.name === session.name_type_session);
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
     var pointsCount = new Array(typeSession.points.length+1).fill(0);
     var titlesTable = []
-    console.log("56- pointsCount=> ",pointsCount)
     if (session.setsList.length>0){
         titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Flecha</Text>);
         for (let i = 1; i < session.setsList[0].points.length+1; i++) {
@@ -60,18 +59,16 @@ export default function ViewSession({route}){
         }
         titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Total</Text>)    
     }else{
-        titlesTable.push(<Text style={[styles.name_info_table,{width:"100%"}]}>No existen sesiones</Text>)
+        titlesTable.push(<Text key="-1" style={[styles.name_info_table,{width:"100%"}]}>No existen sesiones</Text>)
     }
     
 
     var rowsSets = []
-    console.log("64- session.setsList => ",session.setsList)
-    console.log("65- session.setsList.length=>",session.setsList.length)
     session.setsList.forEach((set, indexSet) =>{ //De sesiones
         var cellInRow = []
         var pointInSet = 0
         console.log("set => ", set)
-        cellInRow.push(<Text style={[styles.name_info_table,{width:60}]}>{"Set" + (indexSet+1)}</Text>)
+        cellInRow.push(<Text key={set.n_set} style={[styles.name_info_table,{width:60}]}>{"Set " + (set.n_set)}</Text>)
         set.points.forEach((point, indexArr) => { //De flechas
             if(point=="_"){
                 points=points+0
@@ -84,12 +81,12 @@ export default function ViewSession({route}){
                 pointInSet = pointInSet + pointShot
                 pointsCount[typeSession.points.indexOf(point)] = pointsCount[typeSession.points.indexOf(point)]+1;
             }
-            cellInRow.push(<Text key={indexArr} style={styles.data_info_table}>{point}</Text>)
+            cellInRow.push(<Text key={set.n_set+"_"+indexArr} style={styles.data_info_table}>{point}</Text>)
             arrows++
         })
         cellInRow.push(<Text style={[styles.data_info_table,{width:60, backgroundColor:Colors.colorBlue3, color:Colors.colorBlue1}]}>{pointInSet}</Text>)
         rowsSets.push(
-            <View style={{flexDirection:DirectionLineTable, alignItems:"center"}}>
+            <View key={set.n_set+"_row"} style={{flexDirection:DirectionLineTable, alignItems:"center"}}>
                 {cellInRow}
             </View>)
     })
@@ -111,8 +108,8 @@ export default function ViewSession({route}){
                         justifyContent:"center", width:50, minHeight:"60",
                         height:`${heightCell}%`}}
                     >
-                    <Text style={styles.text_points}>{typeSession.points[typeSession.points.length-index]}'s</Text>
-                    <Text style={styles.value_points}>{item}</Text>
+                    <Text key={item.toString()+"des"} style={styles.text_points}>{typeSession.points[typeSession.points.length-index]}'s</Text>
+                    <Text key={item.toString()+"inf"} style={styles.value_points}>{item}</Text>
                 </View>
             )
         }else if(index>0){

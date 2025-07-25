@@ -2,19 +2,21 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { configBasic, switchStyleMode, typeSesionsList } from '../../global/variables';
+import { configBasic, switchStyleMode, getTypeSessionsList} from '../../global/variables';
 
 export default function MediumSesion(prop) {
 
     const navigation = useNavigation();
     const {session={
-        date:new Date(2024,0,1),
         bow: "Recurvo",
-        pound: 35,
-        distance: 20,
-        setsList:[[10,10,10,10,10,10],[10,10,10,10,10,10],["X","X","X","X","X","X"]],
-        record:"second",
-        typeSession:0
+        date: "9/8/2024",
+        distance: 70,
+        id_session: "1-1753226819839-774503",
+        id_user: "1",
+        name_type_session: "Clásico",
+        pound: 45,
+        setsList: [],
+        time_edit: "2025-07-22 23:26:59.840"
     }, } = prop
 
     var styleView = darkMode
@@ -29,13 +31,25 @@ export default function MediumSesion(prop) {
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
-    var typeSession = typeSesionsList.find(item => item.id === session.type_session);
+    let typeSessionsList = getTypeSessionsList();
+    var typeSession = typeSessionsList.find(item => item.name === session.name_type_session);
+    // console.debug("=========== mediumSession ======= ");
+    // console.debug("__________ typeSession __________");
+    // console.debug(typeSession);
+    // console.debug("__________ session __________");
+    // console.debug(session);
+    // console.debug("__________ session.setsList __________");
+    // console.debug(session.setsList);
     session.setsList.forEach((set) =>{
         set.points.forEach((point) => {
             if(point=="_")
                 points=points+0
             else{
-                points=points+typeSession.values[typeSession.points.indexOf(point)]   
+                // console.log(point)
+                // console.log([typeSession.points.indexOf(point)])
+                // console.log(parseInt(typeSession.values[typeSession.points.indexOf(point)]))
+                points=points+parseInt(typeSession.values[typeSession.points.indexOf(point)])
+                // console.log("===============================0")   
             }
             arrows++
         })

@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { configBasic, switchStyleMode, typeSesionsList } from '../../global/variables';
+import { configBasic, getTypeSessionsList} from '../../global/variables';
 
 export default function LongSesion(prop) {
 
@@ -24,19 +24,14 @@ export default function LongSesion(prop) {
     }else{
         styleView = darkMode
     }
-    //obtener y transformar fecha
-    // var day = session.date.getDate()
-    // var month = (parseInt(session.date.getMonth())+1).toString();
-    // var year = session.date.getFullYear()
-    // if (month.length == 1)
-    //     month = "0"+month
-    // var date = day+"/"+month+"/"+year
+
     var date = session.date
 
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
-    var typeSession = typeSesionsList.find(item => item.id === session.type_session);
+    let typeSessionsList = getTypeSessionsList();
+    var typeSession = typeSessionsList.find(item => item.name === session.name_type_session);
 
     session.setsList.forEach((set) =>{
         set.points.forEach((point) => {

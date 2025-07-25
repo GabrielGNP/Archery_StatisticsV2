@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode } from './styles/themeStyles';
-import { configBasic, switchStyleMode, typeSesionsList } from '../../global/variables';
+import { configBasic, switchStyleMode, getTypeSessionsList } from '../../global/variables';
 
 export default function ShortSesion(prop) {
 
@@ -24,20 +24,14 @@ export default function ShortSesion(prop) {
         styleView = darkMode
     }
 
-    //obtener y transformar fecha
-    // var day = session.date.getDate()
-    // var month = (parseInt(session.date.getMonth())+1).toString();
-    // var year = session.date.getFullYear()
-    // if (month.length == 1)
-    //     month = "0"+month
-    // var date = day+"/"+month+"/"+year
     var date = session.date
 
     //obtener puntaje y flechas
     var arrows = 0
     var points = 0
-    var typeSession = typeSesionsList.find(item => item.id === session.type_session);
-    console.log(typeSession);
+    let typeSessionsList = getTypeSessionsList();
+    var typeSession = typeSessionsList.find(item => item.name === session.name_type_session);
+    // console.log(typeSession);
     session.setsList.forEach((set) =>{
         set.points.forEach((point) => {
                 if(point=="_")
@@ -49,9 +43,9 @@ export default function ShortSesion(prop) {
         })
     })
 
-    console.log("Date => ", date)
+    // console.log("Date => ", date)
     var procesedDate = date.split("/")
-    console.log(typeof(procesedDate[1]), " => ", procesedDate[1])
+    // console.log(typeof(procesedDate[1]), " => ", procesedDate[1])
     switch (procesedDate[1]) {
         case "01", "1":
             procesedDate[1]="Enero"

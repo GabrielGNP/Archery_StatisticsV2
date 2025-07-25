@@ -5,17 +5,19 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
 import { whiteMode, darkMode} from './styles/themeStyles.js';
-import { configBasic, switchStyleMode, typeSesionsList } from '../../global/variables.js';
+import { configBasic, switchStyleMode, getTypeSessionsList} from '../../global/variables.js';
 import { Colors } from '../../global/colors.js';
 
 import BlueButton from '../../components/buttons/blueButton.js';
 import DatePicker from '../../components/modals/datePicker/datePicker.js';
 import OptionSelector from '../../components/modals/optionSelector/optionSelector.js';
-
-
+import { createNewSession, getAllDataTable, getSession } from '../../global/querys.js';
+import { useSQLiteContext } from 'expo-sqlite';
 
 export default function NewSesion() {
-    let sessionsList = [];
+    
+    const db = useSQLiteContext();
+
     let bowsList = ["Recurvo", "Poleas", "Longbow", "Poleas (Interior)"];
     const navigation = useNavigation();
     const [isModalVisible, setModalVisible] = useState(false);
@@ -27,6 +29,8 @@ export default function NewSesion() {
     const [pound, setPound] = useState(35);
     const [sets, setSets] = useState(3);
     const [arrows, setArrows] = useState(3);
+    const [typeSessionsList, setSessionList] = useState(getTypeSessionsList());
+    
     const sessionSelected = useRef(0);
     const bowSelected = useRef(0);
 
@@ -37,14 +41,14 @@ export default function NewSesion() {
     }else{
         styleView = darkMode
     }
-  
-    typeSesionsList.forEach(session => {
-        sessionsList.push(session.name);
-    })
-
+    
     useEffect(()=>{
-        console.log(date)
-    },[date])
+        console.log("Date change to => ", date)
+    },[date])  
+    let listTypeSessionsName = [];
+    typeSessionsList.forEach(typeSession => {
+        listTypeSessionsName.push(typeSession.name);
+    })
     return(
         <KeyboardAvoidingView style={[styles.Main_container,styleView.styles.Main_container]} behavior="none">
             <ScrollView style={styles.first_container}>
@@ -72,7 +76,7 @@ export default function NewSesion() {
                             style={[styles.central_button, styleView.styles.central_button, {width:250}]}
                             onPress={() => {setModalOptions1(true)}}
                         >
-                        <Text style={[styles.option_text,styleView.styles.option_text]}>{sessionsList[sessionSelected.current]}</Text>
+                        <Text style={[styles.option_text,styleView.styles.option_text]}>{typeSessionsList[sessionSelected.current].name}</Text>
                         <Text style={[styles.option_text,styleView.styles.option_text,{fontWeight:"bold",fontSize:20,position:"absolute", right:0}]}>v</Text>
                     </TouchableOpacity>
                 </View>
@@ -148,23 +152,33 @@ export default function NewSesion() {
                 <BlueButton 
                     text="Continuar"    
                     style={{bottom:0,marginTop: 20, alignSelf:"center",display:endButtonVisible}}
-                    onPress={()=>{
-                        var auxSession = {}
-                        typeSesionsList.forEach(session => {
-                            if (session.name == sessionsList[sessionSelected.current]) 
+                    onPress={async ()=>{
+                        var typeSession = {}
+                        typeSessionsList.forEach(Tsession => {
+                            if (Tsession.name == typeSessionsList[sessionSelected.current].name) 
                             {
-                                auxSession = session
+                                typeSession = Tsession
                             }
                         })
-                        navigation.navigate("ActiveSession", {
-                            date:date,
-                            distance:distance,
-                            bow:bowsList[bowSelected.current],
-                            pound:pound,
-                            sets:sets,
-                            arrows:arrows,
-                            sessionType:auxSession
-                        })
+                        try {
+                            // console.log("idUser:", configBasic.userID, typeof(configBasic.userID))
+                            let idSession = await createNewSession(db, configBasic.userID,date, bowsList[bowSelected.current], pound, distance, typeSession.name, sets, arrows);   
+                            // console.debug(idSession)
+                            // console.debug(session)
+                            // console.log(session.setsList)
+                            // console.debug("TypeSession:", typeSession)
+                            
+                            if(idSession){
+                                navigation.navigate("ActiveSession", {
+                                    idSession: idSession,
+                                    sessionType:typeSession
+                                })    
+                            }else console.log("no se pudo recuperar la sesión")
+                        } catch (error) {
+                            console.error("no se pudo crear la sesión");
+                            console.error(error);
+                        }
+                        
                     }}
                     >
                 </BlueButton>   
@@ -183,7 +197,7 @@ export default function NewSesion() {
                 visible={modalOptions1} 
                 visibleFunction={() => setModalOptions1(false)}
                 selectedOption={sessionSelected}
-                listOptions={sessionsList}
+                listOptions={listTypeSessionsName}
             />
             <OptionSelector 
                 onCancel={() => console.log("Cancelado")}

@@ -13,7 +13,7 @@ import FooterListSesions from '../../components/footers/footerListSesions.js';
 
 
 import { useNavigation } from '@react-navigation/native';
-import { readSessions } from '../../global/querys.js';
+import { getAllTypeSessions, readSessions } from '../../global/querys.js';
 import { useSQLiteContext } from 'expo-sqlite';
 // =========== TAREAS ===============
 // Reacomodar la DB (agregar las IDs a los sets) ✅
@@ -41,6 +41,8 @@ export default function SesionsList() {
         try {
             setLoading(true);
             let sessions = await readSessions(db, configBasic.userID);
+            
+            console.debug(sessions)
             setListSessions(sessions || []);
         } catch (error) {
             console.error("Error al cargar sesiones:", error);
@@ -53,7 +55,6 @@ export default function SesionsList() {
     useEffect(()=>{
         getSessions()
     },[])
-    
 
     const listObjectSesions = () => {
         if (!listSesions || listSesions.length === 0) {

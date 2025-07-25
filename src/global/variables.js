@@ -54,17 +54,25 @@ export var exampleListSessions =[
     }, 
 ]
 
-export var typeSesionsList = [
+var typeSessionsList = [
     {
-        id:1,
+        id_user:1,
         name:"Clásico",
         points:["0","1","2","3","4","5","6","7","8","9","10","X"],
         values:[0,1,2,3,4,5,6,7,8,9,10,10]
     },
     {
-        id:2,
+        id_user:2,
         name:"4 puntos",
         points:["X","-","+","✓"],
         values:[0,1,2,3],
     }
 ]
+
+export function getTypeSessionsList(){
+    return typeSessionsList;
+}
+
+export function setTypeSessionsList(newList){
+    typeSessionsList = newList;
+}
