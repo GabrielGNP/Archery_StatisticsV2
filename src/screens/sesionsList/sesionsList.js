@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { StyleSheet, Text, TextInput, View,TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 
 
@@ -12,14 +12,10 @@ import ShortSesion from '../../components/infoSesion/shortSesion.js';
 import FooterListSesions from '../../components/footers/footerListSesions.js';
 
 
-import { useNavigation } from '@react-navigation/native';
-import { getAllTypeSessions, readSessions } from '../../global/querys.js';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { readSessions } from '../../global/querys.js';
 import { useSQLiteContext } from 'expo-sqlite';
-// =========== TAREAS ===============
-// Reacomodar la DB (agregar las IDs a los sets) ✅
-// Cargar sessiones y sets por defecto en la DB ✅
-// Leer las sessiones en objetos (con los sets y su información)
-// Mostrarlos en el listado
+
 
 export default function SesionsList() {
 
@@ -51,10 +47,17 @@ export default function SesionsList() {
             setLoading(false);
         }
     }
-    
-    useEffect(()=>{
-        getSessions()
-    },[])
+    useFocusEffect(
+        useCallback(() => {
+            getSessions();
+
+            //Si necesito hacer alguna acción cuando se pierda el foco
+            // return () => {};
+        }, [])
+    )
+    // useEffect(()=>{
+        
+    // },[])
 
     const listObjectSesions = () => {
         if (!listSesions || listSesions.length === 0) {

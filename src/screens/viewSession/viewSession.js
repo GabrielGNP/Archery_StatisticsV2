@@ -12,7 +12,7 @@ import { useFocusEffect } from "@react-navigation/native"
 var directionRowTable = ""
 export default function ViewSession({route}){
     const {session} = route.params
-    console.log(session)
+    // console.debug(session)
 
     var styleView = whiteMode
     if(configBasic.darkMode==false){
@@ -57,11 +57,11 @@ export default function ViewSession({route}){
     var pointsCount = new Array(typeSession.points.length+1).fill(0);
     var titlesTable = []
     if (session.setsList.length>0){
-        titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Flecha</Text>);
+        titlesTable.push(<Text key={"F"} style={[styles.name_info_table,{width:60}]}>Flecha</Text>);
         for (let i = 1; i < session.setsList[0].points.length+1; i++) {
-            titlesTable.push(<Text style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>{i}</Text>)
+            titlesTable.push(<Text key={i} style={[styles.name_info_table,{width:DirectionLineTable=="row"?40:60}]}>{i}</Text>)
         }
-        titlesTable.push(<Text style={[styles.name_info_table,{width:60}]}>Total</Text>)    
+        titlesTable.push(<Text key={"T"} style={[styles.name_info_table,{width:60}]}>Total</Text>)    
     }else{
         titlesTable.push(<Text key="-1" style={[styles.name_info_table,{width:"100%"}]}>No existen sesiones</Text>)
     }
@@ -71,7 +71,6 @@ export default function ViewSession({route}){
     session.setsList.forEach((set, indexSet) =>{ //De sesiones
         var cellInRow = []
         var pointInSet = 0
-        console.log("set => ", set)
         cellInRow.push(<Text key={set.n_set} style={[styles.name_info_table,{width:60}]}>{"Set " + (set.n_set)}</Text>)
         set.points.forEach((point, indexArr) => { //De flechas
             if(point=="_"){
@@ -244,6 +243,8 @@ export default function ViewSession({route}){
             <MenuViewSession
                 visible = {showMenu}
                 closeMenu = {() => setShowMenu(false)}
+                idSession = {session.id_session}
+                typeSession = {typeSession}
             >
             </MenuViewSession>
             
