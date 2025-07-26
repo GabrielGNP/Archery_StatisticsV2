@@ -169,10 +169,14 @@ export default function NewSesion() {
                             // console.debug("TypeSession:", typeSession)
                             
                             if(idSession){
-                                navigation.navigate("ActiveSession", {
+                                navigation.replace("ActiveSession", {
                                     idSession: idSession,
                                     sessionType:typeSession
-                                })    
+                                })
+                                // navigation.navigate("ActiveSession", {
+                                //     idSession: idSession,
+                                //     sessionType:typeSession
+                                // })    
                             }else console.log("no se pudo recuperar la sesión")
                         } catch (error) {
                             console.error("no se pudo crear la sesión");

@@ -6,9 +6,10 @@ import { whiteMode, darkMode} from './styles/themeStyles.js';
 import { configBasic, switchStyleMode } from '../../global/variables.js';
 
 import { Feather } from '@expo/vector-icons';
+import { useMenu } from '../contextProviders/menusProviders.js';
 
 export default function OptionsMenu() {
-
+    const {openMenu} = useMenu()
     var styleView = whiteMode
     if(configBasic.darkMode==false){
         styleView = whiteMode
@@ -19,7 +20,7 @@ export default function OptionsMenu() {
     return(
         <View style={styles.container_menu_button}>
             <TouchableOpacity 
-                onPress = {function nothing(){console.log("menú");}}
+                onPress = {openMenu}
                 style={styles.menuButton}>
                     <Feather name="menu" size={45} 
                         color={styleView.icon_menu_color} 

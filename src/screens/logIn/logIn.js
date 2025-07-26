@@ -82,7 +82,6 @@ export default function LogIn() {
                   let id_user = await getUsuario(db, userName, password)
                   await getAllDataTable(db, "session")
                   if(typeof(id_user)=="number"){
-                    //navigation.replace("Home")
                     configBasic.userID = id_user;
                     try {
                         let configLoaded = await loadConfig(db, id_user, "basic")
@@ -103,7 +102,7 @@ export default function LogIn() {
                         console.error("hubo un problema al cargar los datos del usuario")
                         console.error(error)
                     }
-                    
+                    //navigation.replace("Home")
                     navigation.navigate("Home")
                   }else{
                     console.log("Error al iniciar sesion", id_user)

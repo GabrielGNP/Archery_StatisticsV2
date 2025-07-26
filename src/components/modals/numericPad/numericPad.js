@@ -52,13 +52,13 @@ export default function NumericPad(prop) {
         });
     return(
         <Modal 
-                isVisible={visible}
-                onBackdropPress={closeNumPad}
-                backdropOpacity={0.4}
-                animationInTiming={400}
-                animationOutTiming={400}
-                style={{margin:0}}
-            >
+            isVisible={visible}
+            onBackdropPress={closeNumPad}
+            backdropOpacity={0.4}
+            animationInTiming={400}
+            animationOutTiming={400}
+            style={{margin:0}}
+        >
             <View style={[styles.container_modal,styleView.styles.container_modal]}>
                 <View style={{flexDirection:"row-reverse", flexWrap:"wrap", width:"80%", justifyContent:"center", alignContent:"center"}}>
                     {listButtons}

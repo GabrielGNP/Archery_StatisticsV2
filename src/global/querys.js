@@ -85,7 +85,7 @@ export const addBasicData = async (db) => {
         const utcNow = parseDateToUTCCleaned(new Date());
         let query = `
             INSERT OR REPLACE INTO "config" ("id_user", "name_config","config_json", "time_edit") 
-            VALUES (1, 'basic', '{"darkMode":true, "modelViewSesions":"medium"}', '${utcNow}');
+            VALUES (1, 'basic', '{"darkMode":false, "modelViewSesions":"medium"}', '${utcNow}');
             `
         await db.execAsync(query);
     } catch (error) {

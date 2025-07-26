@@ -20,6 +20,7 @@ import IconsPage from './src/screens/icons.js';
 
 import { SQLiteProvider } from 'expo-sqlite';
 import { createTables, deleteAllTables } from './src/global/querys.js';
+import { MenuProvider } from './src/components/contextProviders/menusProviders.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -123,7 +124,9 @@ function RootStack() {
 export default function App() {
   return (
     <NavigationContainer>
+      <MenuProvider>
         <RootStack></RootStack>
+      </MenuProvider>
     </NavigationContainer>
   );
 }

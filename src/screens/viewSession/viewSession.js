@@ -1,20 +1,13 @@
-import React, {useState} from "react"
+import React, {useCallback, useState} from "react"
 import { View,Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 
 import { whiteMode, darkMode} from "./styles/themeStyles"
 import { configBasic, getTypeSessionsList } from "../../global/variables"
 import { Colors } from "../../global/colors"
 import { Feather, FontAwesome } from '@expo/vector-icons';
-
-
-// id_session: 1,
-// date: "9/8/2024",
-// bow: "Recurvo",
-// pound: 35,
-// distance: 20,
-// setsList:[[10,10,10,10,10,10],[10,10,10,10,10,10],["X","X","X","X","X","X"]],
-// record:"second",
-// typeSession:0
+import MenuViewSession from "../../components/menus/menuViewSession/menuViewSession"
+import { useMenu } from "../../components/contextProviders/menusProviders"
+import { useFocusEffect } from "@react-navigation/native"
 
 var directionRowTable = ""
 export default function ViewSession({route}){
@@ -31,6 +24,17 @@ export default function ViewSession({route}){
     const [colorButDirectionRight, setColorButDirR] = useState(Colors.colorBlue1);
     const [DirectionContainerTable, setDirectionContainerTable] = useState("column");
     const [DirectionLineTable, setDirectionLineTable] = useState("row");
+    
+    const [showMenu, setShowMenu] = useState(false);
+    const {registerMenuHandler, unregisterMenuHandler} = useMenu();
+
+    useFocusEffect(
+        useCallback(() => {
+            registerMenuHandler(() => setShowMenu(true));
+        
+            return () => unregisterMenuHandler();
+        }, [])
+    );
 
     directionRowTable = DirectionLineTable;
     //formateador de fecha
@@ -236,6 +240,12 @@ export default function ViewSession({route}){
                     </View>
                 </ScrollView>
             </ScrollView>
+
+            <MenuViewSession
+                visible = {showMenu}
+                closeMenu = {() => setShowMenu(false)}
+            >
+            </MenuViewSession>
             
         </View>
     )
