@@ -159,6 +159,18 @@ export const createTables = async(db) => {
             PRIMARY KEY("id_user" AUTOINCREMENT)
         );
         `);
+        //type_session
+        await db.execAsync(`
+        CREATE TABLE IF NOT EXISTS "type_session" (
+            "id_user" INTEGER NOT NULL,
+            "name" TEXT NOT NULL,
+            "points" TEXT,
+            "values" TEXT,
+            "time_edit" TEXT NOT NULL,
+            PRIMARY KEY ("id_user", "name"),
+            FOREIGN KEY ("id_user") REFERENCES "user"("id_user")
+        );
+        `);
         //session
         /*
         -- ID como UUID o ID compuesta (ej: id_user + timestamp)
@@ -168,7 +180,7 @@ export const createTables = async(db) => {
         await db.execAsync(`
         CREATE TABLE IF NOT EXISTS "session" (
             "id_session" TEXT NOT NULL PRIMARY KEY,
-            "id_user" TEXT NOT NULL,
+            "id_user" INTEGER NOT NULL,
             "name_type_session" TEXT NOT NULL,
             "date" TEXT NOT NULL,
             "bow" TEXT,
@@ -178,18 +190,6 @@ export const createTables = async(db) => {
             FOREIGN KEY ("id_user") REFERENCES "user"("id_user"),
             FOREIGN KEY ("id_user", "name_type_session")
                 REFERENCES "type_session"("id_user", "name")
-        );
-        `);
-        //type_session
-        await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS "type_session" (
-            "id_user" TEXT NOT NULL,
-            "name" TEXT NOT NULL,
-            "points" TEXT,
-            "values" TEXT,
-            "time_edit" TEXT NOT NULL,
-            PRIMARY KEY ("id_user", "name"),
-            FOREIGN KEY ("id_user") REFERENCES "user"("id_user")
         );
         `);
         //set
